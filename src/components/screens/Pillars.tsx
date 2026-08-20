@@ -55,10 +55,12 @@ export default function Pillars() {
 
   return (
     <>
-      {/* Mobile: one pillar per screen, with a running index so the reader
-          always knows where they are in the sequence. */}
+      {/* Mobile: one pillar per full-viewport screen, with a running index so
+          the reader always knows where they are in the sequence. The fill here
+          is deliberate and is the exception to the content-sized default: the
+          swipe-through sequence is the affordance, not dead space. */}
       {pillars.map((pillar) => (
-        <ScreenShell key={pillar.id} id={`pillar-${pillar.id}`} className="md:hidden">
+        <ScreenShell key={pillar.id} id={`pillar-${pillar.id}`} fill className="md:hidden">
           <p className="font-mono text-xs tracking-wide text-slate uppercase">
             {pad(pillar.index)} / {pad(total)}
           </p>

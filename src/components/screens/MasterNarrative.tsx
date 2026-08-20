@@ -3,7 +3,7 @@ import { masterNarrative } from "@/src/content/content";
 
 export default function MasterNarrative() {
   return (
-    <ScreenShell id="narrative" className="relative">
+    <ScreenShell id="narrative" fill className="relative">
       <p className="font-mono text-xs tracking-wide text-accent uppercase">
         {masterNarrative.eyebrow}
       </p>

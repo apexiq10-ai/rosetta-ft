@@ -3,7 +3,7 @@ import {
   DM_Sans,
   IBM_Plex_Mono,
   Instrument_Serif,
-  Outfit,
+  Inter,
 } from "next/font/google";
 import "./globals.css";
 import ComplianceFooter from "@/src/components/ComplianceFooter";
@@ -17,8 +17,8 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${outfit.variable} ${dmSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${instrumentSerif.variable} ${inter.variable} ${dmSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-canvas font-body text-ink">
         <SourceProvider>
