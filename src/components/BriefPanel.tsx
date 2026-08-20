@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import SourceChip from "./SourceChip";
 import {
   sources,
@@ -11,6 +11,8 @@ import { ui } from "@/src/content/ui";
 
 const PRIMARY =
   "border border-accent bg-accent px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+const GENERATE =
+  "border border-generate bg-generate px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const SECONDARY =
   "border border-ink px-6 py-3 font-sans text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
@@ -48,7 +50,13 @@ function briefAsText(brief: StrategicBrief) {
   return lines.join("\n");
 }
 
-export default function BriefPanel({ pillar }: { pillar: Pillar }) {
+export default function BriefPanel({
+  pillar,
+  actions,
+}: {
+  pillar: Pillar;
+  actions?: ReactNode;
+}) {
   const [briefs, setBriefs] = useState<Record<string, StrategicBrief>>({});
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [failure, setFailure] = useState<{ id: string; message: string } | null>(null);
@@ -165,16 +173,20 @@ export default function BriefPanel({ pillar }: { pillar: Pillar }) {
 
   return (
     <div className="mt-8">
-      <button
-        type="button"
-        onClick={generate}
-        disabled={status === "loading"}
-        className={PRIMARY}
-      >
-        {status === "loading"
-          ? ui.thinking
-          : `${ui.generateBrief} - ${pillar.shorthand}`}
-      </button>
+      {/* Export actions first, then the one action that creates something new. */}
+      <div className="flex flex-wrap gap-4">
+        {actions}
+        <button
+          type="button"
+          onClick={generate}
+          disabled={status === "loading"}
+          className={GENERATE}
+        >
+          {status === "loading"
+            ? ui.thinking
+            : `${ui.generateBrief} - ${pillar.shorthand}`}
+        </button>
+      </div>
 
       {status === "error" && failure ? (
         <p role="status" className="mt-4 font-body text-sm leading-relaxed text-slate">
@@ -185,7 +197,7 @@ export default function BriefPanel({ pillar }: { pillar: Pillar }) {
       {brief ? (
         <article className="mt-8 border border-hairline bg-paper">
           <div className="border-b border-hairline p-6 md:p-8">
-            <h3 className="font-sans text-2xl leading-tight font-semibold text-ink md:text-3xl">
+            <h3 className="font-sans text-3xl leading-tight font-semibold text-ink md:text-4xl">
               {brief.title}
             </h3>
             {/* The one part of this document that exists nowhere else on the
@@ -215,7 +227,7 @@ export default function BriefPanel({ pillar }: { pillar: Pillar }) {
           <div className="grid gap-px bg-hairline">
             {brief.treatments.map((treatment) => (
               <div key={treatment.audienceId} className="bg-paper p-6 md:p-8">
-                <h4 className="font-sans text-xl leading-tight font-semibold text-ink">
+                <h4 className="font-sans text-2xl leading-tight font-semibold text-ink">
                   {treatment.audienceLabel}
                 </h4>
                 <p className="mt-4 font-body text-base leading-relaxed text-ink">

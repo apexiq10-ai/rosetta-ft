@@ -195,24 +195,27 @@ export default function Cascade() {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-wrap gap-4">
-        <button
-          type="button"
-          onClick={downloadPdf}
-          disabled={busy}
-          className="border border-accent bg-accent px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          {ui.downloadCanvasPdf}
-        </button>
-        <a
-          href={mailto}
-          className="border border-ink px-6 py-3 font-sans text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          {ui.emailCanvas}
-        </a>
-      </div>
-
-      <BriefPanel pillar={pillar} />
+      <BriefPanel
+        pillar={pillar}
+        actions={
+          <>
+            <button
+              type="button"
+              onClick={downloadPdf}
+              disabled={busy}
+              className="border border-accent bg-accent px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              {ui.downloadCanvasPdf}
+            </button>
+            <a
+              href={mailto}
+              className="border border-ink px-6 py-3 font-sans text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              {ui.emailCanvas}
+            </a>
+          </>
+        }
+      />
     </ScreenShell>
   );
 }
