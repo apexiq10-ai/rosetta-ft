@@ -213,6 +213,12 @@ export const argument = {
 // One per screen on mobile. Two-up on desktop. Each is a provable claim.
 // ----------------------------------------------------------------------------
 
+export const pillarsIntro = {
+  heading: "The four proofs",
+  standfirst:
+    "Each pillar is a claim the firm can already evidence, with the source behind it.",
+};
+
 export const pillars: Pillar[] = [
   {
     id: "rails",

@@ -1,6 +1,6 @@
 import ScreenShell from "../ScreenShell";
 import SourceChip from "../SourceChip";
-import { pillars, type Pillar } from "@/src/content/content";
+import { pillars, pillarsIntro, type Pillar } from "@/src/content/content";
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
@@ -8,6 +8,19 @@ type PillarBodyProps = {
   pillar: Pillar;
   variant: "screen" | "card";
 };
+
+function SectionHeader() {
+  return (
+    <div className="mb-10">
+      <h2 className="max-w-4xl font-sans text-3xl leading-tight font-semibold text-ink md:text-4xl">
+        {pillarsIntro.heading}
+      </h2>
+      <p className="mt-4 font-body text-base leading-relaxed text-slate md:text-lg">
+        {pillarsIntro.standfirst}
+      </p>
+    </div>
+  );
+}
 
 function PillarBody({ pillar, variant }: PillarBodyProps) {
   const isScreen = variant === "screen";
@@ -17,7 +30,7 @@ function PillarBody({ pillar, variant }: PillarBodyProps) {
 
   return (
     <>
-      <span className="inline-block rounded-md bg-accent-muted px-2 py-1 font-mono text-xs tracking-wide text-accent uppercase">
+      <span className="inline-block bg-accent-muted px-2 py-1 font-mono text-xs tracking-wide text-accent uppercase">
         {pillar.shorthand}
       </span>
 
@@ -59,8 +72,9 @@ export default function Pillars() {
           the reader always knows where they are in the sequence. The fill here
           is deliberate and is the exception to the content-sized default: the
           swipe-through sequence is the affordance, not dead space. */}
-      {pillars.map((pillar) => (
+      {pillars.map((pillar, position) => (
         <ScreenShell key={pillar.id} id={`pillar-${pillar.id}`} fill className="md:hidden">
+          {position === 0 ? <SectionHeader /> : null}
           <p className="font-mono text-xs tracking-wide text-slate uppercase">
             {pad(pillar.index)} / {pad(total)}
           </p>
@@ -72,11 +86,12 @@ export default function Pillars() {
 
       {/* Desktop: all four at once, two up. */}
       <ScreenShell id="pillars" className="hidden md:flex">
+        <SectionHeader />
         <div className="grid grid-cols-2 gap-6">
           {pillars.map((pillar) => (
             <article
               key={pillar.id}
-              className="rounded-md border border-hairline bg-paper p-6 shadow-sm"
+              className="border border-hairline bg-paper p-6 shadow-sm"
             >
               <p className="font-mono text-xs tracking-wide text-slate uppercase">
                 {pad(pillar.index)} / {pad(total)}
