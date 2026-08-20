@@ -109,7 +109,7 @@ export function SourceProvider({ children }: { children: ReactNode }) {
         aria-modal="true"
         aria-labelledby="source-drawer-title"
         inert={!isOpen}
-        className={`fixed inset-x-0 bottom-0 z-50 max-h-[80dvh] overflow-y-auto rounded-t-md border-t border-hairline bg-paper transition-transform duration-200 ease-out md:inset-y-0 md:right-0 md:left-auto md:w-[26rem] md:max-h-none md:rounded-none md:rounded-l-md md:border-t-0 md:border-l ${
+        className={`fixed inset-x-0 bottom-0 z-50 max-h-[80dvh] overflow-y-auto border-t border-hairline bg-paper transition-transform duration-200 ease-out md:inset-y-0 md:right-0 md:left-auto md:w-[26rem] md:max-h-none md:border-t-0 md:border-l ${
           isOpen
             ? "translate-y-0 md:translate-x-0"
             : "translate-y-full md:translate-y-0 md:translate-x-full"
@@ -128,7 +128,7 @@ export function SourceProvider({ children }: { children: ReactNode }) {
             type="button"
             onClick={close}
             aria-label={ui.drawerClose}
-            className="-mt-1 rounded-md border border-hairline px-2 py-1 font-mono text-xs text-slate transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="-mt-1 border border-hairline px-2 py-1 font-mono text-xs text-slate transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <svg
               viewBox="0 0 12 12"

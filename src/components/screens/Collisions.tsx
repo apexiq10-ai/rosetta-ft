@@ -68,7 +68,7 @@ function CollisionCard({ collision }: { collision: Collision }) {
         <p className="font-body text-base leading-relaxed text-ink">
           {collision.resolution}
         </p>
-        <SourceChip sourceIds={collision.sourceIds} className="mt-6" square />
+        <SourceChip sourceIds={collision.sourceIds} className="mt-6" />
       </Quadrant>
     </div>
   );
@@ -86,7 +86,7 @@ export default function Collisions() {
       <h2 className="max-w-4xl font-sans text-3xl leading-tight font-semibold text-ink md:text-4xl">
         {collisionsIntro.heading}
       </h2>
-      <p className="mt-4 max-w-[70ch] font-body text-base leading-relaxed text-slate md:text-lg">
+      <p className="mt-4 font-body text-base leading-relaxed text-slate md:text-lg">
         {collisionsIntro.standfirst}
       </p>
 

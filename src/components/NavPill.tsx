@@ -39,7 +39,7 @@ export default function NavPill() {
       onClick={jump}
       tabIndex={hidden ? -1 : 0}
       aria-hidden={hidden}
-      className={`fixed right-6 bottom-16 z-40 flex items-center gap-2 rounded-md border border-hairline bg-paper px-4 py-3 font-sans text-sm text-ink shadow-sm transition-opacity duration-200 hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:right-12 ${
+      className={`fixed right-6 bottom-16 z-40 flex items-center gap-2 border border-hairline bg-paper px-4 py-3 font-sans text-sm text-ink shadow-sm transition-opacity duration-200 hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:right-12 ${
         hidden ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
     >
