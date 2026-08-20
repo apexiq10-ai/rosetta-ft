@@ -1,0 +1,91 @@
+import ScreenShell from "../ScreenShell";
+import SourceChip from "../SourceChip";
+import { pillars, type Pillar } from "@/src/content/content";
+
+const pad = (value: number) => String(value).padStart(2, "0");
+
+type PillarBodyProps = {
+  pillar: Pillar;
+  variant: "screen" | "card";
+};
+
+function PillarBody({ pillar, variant }: PillarBodyProps) {
+  const isScreen = variant === "screen";
+  // Cards carry the same content at a tighter rhythm so all four pillars fit
+  // one viewport on desktop without scrolling.
+  const gap = isScreen ? "mt-6" : "mt-4";
+
+  return (
+    <>
+      <span className="inline-block rounded-md bg-accent-muted px-2 py-1 font-mono text-xs tracking-wide text-accent uppercase">
+        {pillar.shorthand}
+      </span>
+
+      <h3
+        className={`${gap} font-sans leading-tight font-semibold text-ink ${
+          isScreen ? "text-3xl md:text-4xl" : "text-2xl"
+        }`}
+      >
+        {pillar.statement}
+      </h3>
+
+      <p
+        className={`${gap} max-w-[65ch] font-body leading-relaxed text-slate ${
+          isScreen ? "text-base md:text-lg" : "text-sm"
+        }`}
+      >
+        {pillar.body}
+      </p>
+
+      <p
+        className={`${gap} max-w-[65ch] border-l-2 border-hairline pl-4 font-body leading-relaxed text-ink ${
+          isScreen ? "text-sm" : "text-xs"
+        }`}
+      >
+        {pillar.proof}
+      </p>
+
+      <SourceChip sourceIds={pillar.sourceIds} className={gap} />
+    </>
+  );
+}
+
+export default function Pillars() {
+  const total = pillars.length;
+
+  return (
+    <>
+      {/* Mobile: one pillar per screen, with a running index so the reader
+          always knows where they are in the sequence. */}
+      {pillars.map((pillar) => (
+        <ScreenShell key={pillar.id} id={`pillar-${pillar.id}`} className="md:hidden">
+          <p className="font-mono text-xs tracking-wide text-slate uppercase">
+            {pad(pillar.index)} / {pad(total)}
+          </p>
+          <div className="mt-8">
+            <PillarBody pillar={pillar} variant="screen" />
+          </div>
+        </ScreenShell>
+      ))}
+
+      {/* Desktop: all four at once, two up. */}
+      <ScreenShell id="pillars" className="hidden md:flex">
+        <div className="grid grid-cols-2 gap-6">
+          {pillars.map((pillar) => (
+            <article
+              key={pillar.id}
+              className="rounded-md border border-hairline bg-paper p-6 shadow-sm"
+            >
+              <p className="font-mono text-xs tracking-wide text-slate uppercase">
+                {pad(pillar.index)} / {pad(total)}
+              </p>
+              <div className="mt-4">
+                <PillarBody pillar={pillar} variant="card" />
+              </div>
+            </article>
+          ))}
+        </div>
+      </ScreenShell>
+    </>
+  );
+}
