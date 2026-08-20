@@ -62,7 +62,54 @@
   animation: cell-in 220ms ease-out;
 }
 
+/* One-time entrance for the opening screen. Staggered, not looped. */
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes enter-rule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-enter {
+  opacity: 0;
+  animation: enter-up 300ms ease-out forwards;
+}
+
+.animate-enter-rule {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: enter-rule 300ms ease-out forwards;
+}
+
+.enter-step-2 {
+  animation-delay: 150ms;
+}
+
+.enter-step-3 {
+  animation-delay: 300ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .animate-enter,
+  .animate-enter-rule {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
   .animate-cell {
     animation: none;
   }

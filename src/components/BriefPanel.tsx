@@ -108,6 +108,30 @@ export default function BriefPanel({
     const width = pageW - margin * 2;
     let y = margin;
 
+    const BULLET_X = 12;
+    const BULLET_TEXT_X = 26;
+
+    /**
+     * A bulleted line whose wrapped continuation lines align under the text,
+     * not back at the page margin.
+     */
+    const writeBullet = (text: string, size: number, gapAfter: number) => {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(size);
+      const lines: string[] = doc.splitTextToSize(text, width - BULLET_TEXT_X);
+      const lineHeight = size * 1.35;
+      lines.forEach((line, index) => {
+        if (y + lineHeight > pageH - margin) {
+          doc.addPage();
+          y = margin;
+        }
+        if (index === 0) doc.text("\u2022", margin + BULLET_X, y);
+        doc.text(line, margin + BULLET_TEXT_X, y);
+        y += lineHeight;
+      });
+      y += gapAfter;
+    };
+
     const write = (
       text: string,
       size: number,
@@ -147,18 +171,16 @@ export default function BriefPanel({
 
     brief.treatments.forEach((treatment) => {
       const cites = citationNumbers(treatment.sourceIds);
-      write(treatment.audienceLabel, 13, "bold", 6);
-      write(treatment.message, 10, "normal", 8, 12);
-      write(
+      write(treatment.audienceLabel, 13, "bold", 8);
+      writeBullet(treatment.message, 10, 6);
+      writeBullet(
         `${ui.proofLabel}: ${treatment.proof}${
           cites.length ? ` [${cites.join("] [")}]` : ""
         }`,
         10,
-        "normal",
-        8,
-        12,
+        6,
       );
-      write(`${ui.channelLabel}: ${treatment.channel}`, 10, "normal", 8, 12);
+      writeBullet(`${ui.channelLabel}: ${treatment.channel}`, 10, 10);
       write(`${ui.doNotSayLabel}: ${treatment.doNotSay}`, 10, "normal", 20, 12);
     });
 

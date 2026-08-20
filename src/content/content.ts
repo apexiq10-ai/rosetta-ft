@@ -207,8 +207,9 @@ export const sources: Source[] = [
 
 export const masterNarrative = {
   eyebrow: "Franklin Templeton FIRST",
-  statement:
-    "Franklin Templeton is not asking institutions to believe in a new asset class. It is rebuilding the infrastructure the existing ones already run on.",
+  statementLead: "Franklin Templeton",
+  statementRest:
+    "didn't build a new asset class. It rebuilt the rails underneath it.",
   subhead:
     "A narrative architecture for FIRST, its Digital Assets team, and Franklin Crypto.",
   scrollCue: "The argument",
