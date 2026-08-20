@@ -333,9 +333,9 @@ export const collisions: Collision[] = [
 // ----------------------------------------------------------------------------
 
 export const cascadeIntro = {
-  heading: "The same argument, aimed five ways.",
+  heading: "Messaging canvas",
   standfirst:
-    "Choose a pillar, then an audience. The underlying claim never changes. What changes is the emphasis, the proof that carries it, the channel it travels through, and the thing that must not be said.",
+    "Select a pillar. See how the same proof lands across five audiences.",
 };
 
 export const audiences: Audience[] = [

@@ -7,13 +7,19 @@ import { useSourceDrawer } from "./SourceDrawer";
 type SourceChipProps = {
   sourceIds: string[];
   className?: string;
+  /** Square corners, for the components that have dropped rounding. */
+  square?: boolean;
 };
 
 /**
  * Renders one numbered chip per source id. The number is the position of the
  * source in the sources array, so citations stay stable if the array grows.
  */
-export default function SourceChip({ sourceIds, className = "" }: SourceChipProps) {
+export default function SourceChip({
+  sourceIds,
+  className = "",
+  square = false,
+}: SourceChipProps) {
   const { openSource, openSourceId } = useSourceDrawer();
 
   return (
@@ -31,7 +37,7 @@ export default function SourceChip({ sourceIds, className = "" }: SourceChipProp
             aria-haspopup="dialog"
             aria-expanded={openSourceId === id}
             aria-label={`${ui.sourceChipLabel} ${index + 1}. ${source.publisher}`}
-            className="rounded-md border border-hairline bg-accent-muted px-1.5 py-0.5 font-mono text-xs tracking-wide text-accent transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className={`${square ? "" : "rounded-md"} border border-hairline bg-accent-muted px-1.5 py-0.5 font-mono text-xs tracking-wide text-accent transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}
           >
             [{index + 1}]
           </button>

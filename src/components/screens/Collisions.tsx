@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState, type ReactNode } from "react";
 import ScreenShell from "../ScreenShell";
 import SourceChip from "../SourceChip";
 import { collisions, collisionsIntro, type Collision } from "@/src/content/content";
@@ -8,108 +8,78 @@ import { ui } from "@/src/content/ui";
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
-function CollisionCard({ collision, total }: { collision: Collision; total: number }) {
+type QuadrantProps = {
+  label: string;
+  tone: "plain" | "light" | "dark";
+  accent?: boolean;
+  children: ReactNode;
+};
+
+// One background per tone. Every quadrant otherwise carries the same rule
+// weight and colour, which the grid gap supplies rather than each cell.
+const tones: Record<QuadrantProps["tone"], string> = {
+  plain: "bg-paper",
+  light: "bg-canvas",
+  dark: "bg-shade",
+};
+
+function Quadrant({ label, tone, accent = false, children }: QuadrantProps) {
   return (
-    <article className="w-full shrink-0 snap-center px-1">
-      <div className="h-full rounded-md border border-hairline bg-paper p-6 shadow-sm md:p-10">
-        <p className="font-mono text-xs tracking-wide text-slate uppercase">
-          {pad(collision.index)} / {pad(total)}
+    <div className={`p-6 md:p-8 ${tones[tone]} ${accent ? "border-t-2 border-accent" : ""}`}>
+      <h3
+        className={`font-sans text-lg leading-tight font-semibold ${
+          accent ? "text-accent" : "text-ink"
+        }`}
+      >
+        {label}
+      </h3>
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+function CollisionCard({ collision }: { collision: Collision }) {
+  return (
+    <div className="grid gap-px border border-hairline bg-hairline md:grid-cols-2">
+      <Quadrant label={ui.tensionLabel} tone="plain">
+        <p className="font-body text-base leading-relaxed text-slate">
+          {collision.tension}
         </p>
+      </Quadrant>
 
-        <h3 className="mt-6 font-sans text-3xl leading-tight font-semibold text-ink md:text-4xl">
-          {collision.title}
-        </h3>
+      <Quadrant label={ui.evidenceLabel} tone="plain">
+        <ul className="space-y-2">
+          {collision.evidence.map((item, index) => (
+            <li key={index} className="flex gap-3 font-body text-sm leading-relaxed text-ink">
+              <span aria-hidden="true" className="text-slate">
+                {pad(index + 1)}
+              </span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </Quadrant>
 
-        {/* Problem on the left, answer on the right. The split fills the card
-            width and doubles as the separation the section needs. */}
-        <div className="mt-8 grid gap-10 md:grid-cols-2 md:gap-16">
-          <div>
-            <p className="font-body text-base leading-relaxed text-slate md:text-lg">
-              {collision.tension}
-            </p>
+      <Quadrant label={ui.costLabel} tone="light">
+        <p className="font-body text-base leading-relaxed text-ink">{collision.cost}</p>
+      </Quadrant>
 
-            <p className="mt-8 font-mono text-xs tracking-wide text-slate uppercase">
-              {ui.evidenceLabel}
-            </p>
-            <ul className="mt-3 space-y-2">
-              {collision.evidence.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex gap-3 font-mono text-xs leading-relaxed text-ink"
-                >
-                  <span aria-hidden="true" className="text-slate">
-                    {pad(index + 1)}
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className="font-mono text-xs tracking-wide text-slate uppercase">
-              {ui.costLabel}
-            </p>
-            <p className="mt-3 border-l-2 border-accent pl-4 font-body text-base leading-relaxed text-ink">
-              {collision.cost}
-            </p>
-
-            <div className="mt-8 rounded-md bg-accent-muted p-6">
-              <p className="font-mono text-xs tracking-wide text-accent uppercase">
-                {ui.resolutionLabel}
-              </p>
-              <p className="mt-3 font-body text-base leading-relaxed text-ink">
-                {collision.resolution}
-              </p>
-            </div>
-
-            <SourceChip sourceIds={collision.sourceIds} className="mt-6" />
-          </div>
-        </div>
-      </div>
-    </article>
+      <Quadrant label={ui.resolutionLabel} tone="dark" accent>
+        <p className="font-body text-base leading-relaxed text-ink">
+          {collision.resolution}
+        </p>
+        <SourceChip sourceIds={collision.sourceIds} className="mt-6" square />
+      </Quadrant>
+    </div>
   );
 }
 
 export default function Collisions() {
   const total = collisions.length;
-  const trackRef = useRef<HTMLDivElement | null>(null);
   const [index, setIndex] = useState(0);
+  const active = collisions[index];
 
-  // The track is the source of truth for position, so a native swipe and an
-  // arrow press converge on the same state.
-  const goTo = useCallback((next: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const clamped = Math.max(0, Math.min(next, total - 1));
-    // Commit the intent immediately rather than waiting for the scroll to
-    // settle, so a second arrow press advances instead of re-requesting the
-    // page still being animated to.
-    setIndex(clamped);
-    track.scrollTo({
-      left: clamped * track.clientWidth,
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth",
-    });
-  }, [total]);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        setIndex(Math.round(track.scrollLeft / track.clientWidth));
-      });
-    };
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      track.removeEventListener("scroll", onScroll);
-    };
-  }, []);
+  const arrow = "border border-hairline bg-paper p-2 text-slate transition-colors hover:border-accent hover:text-ink disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
   return (
     <ScreenShell id="collisions" bg="shade">
@@ -120,54 +90,62 @@ export default function Collisions() {
         {collisionsIntro.standfirst}
       </p>
 
-      <div
-        ref={trackRef}
-        className="mt-10 flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {collisions.map((collision) => (
-          <CollisionCard key={collision.id} collision={collision} total={total} />
-        ))}
-      </div>
+      <div className="mt-10 border border-hairline bg-paper">
+        {/* Pagination lives at the head of the card: tabs carry the titles, the
+            arrows step through them. */}
+        <div className="flex items-stretch gap-3 border-b border-hairline p-3">
+          <button
+            type="button"
+            onClick={() => setIndex((i) => Math.max(0, i - 1))}
+            disabled={index === 0}
+            aria-label={ui.sliderPrevious}
+            className={`hidden shrink-0 md:block ${arrow}`}
+          >
+            <svg viewBox="0 0 8 12" className="h-3 w-2" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M7 1L2 6l5 5" />
+            </svg>
+          </button>
 
-      <div className="mt-6 flex items-center gap-4">
-        <button
-          type="button"
-          onClick={() => goTo(index - 1)}
-          disabled={index === 0}
-          aria-label={ui.sliderPrevious}
-          className="hidden rounded-md border border-hairline bg-paper p-2 text-slate transition-colors hover:border-accent hover:text-ink disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:block"
-        >
-          <svg viewBox="0 0 8 12" className="h-3 w-2" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M7 1L2 6l5 5" />
-          </svg>
-        </button>
+          <div
+            role="tablist"
+            aria-label={ui.sliderPagination}
+            className="flex flex-1 gap-px overflow-x-auto bg-hairline [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {collisions.map((collision, i) => (
+              <button
+                key={collision.id}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                onClick={() => setIndex(i)}
+                className={`flex min-w-[14rem] flex-1 flex-col gap-1 px-4 py-3 text-left transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent ${
+                  i === index ? "bg-shade text-ink" : "bg-paper text-slate hover:text-ink"
+                }`}
+              >
+                <span className="font-mono text-xs tracking-wide">
+                  {pad(collision.index)} / {pad(total)}
+                </span>
+                <span className="font-sans text-sm leading-snug font-semibold">
+                  {collision.title}
+                </span>
+              </button>
+            ))}
+          </div>
 
-        <div role="group" aria-label={ui.sliderPagination} className="flex items-center gap-2">
-          {collisions.map((collision, i) => (
-            <button
-              key={collision.id}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`${ui.sliderGoTo} ${i + 1}`}
-              aria-current={i === index}
-              className={`h-2 rounded-md transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                i === index ? "w-6 bg-accent" : "w-2 bg-hairline hover:bg-slate"
-              }`}
-            />
-          ))}
+          <button
+            type="button"
+            onClick={() => setIndex((i) => Math.min(total - 1, i + 1))}
+            disabled={index === total - 1}
+            aria-label={ui.sliderNext}
+            className={`hidden shrink-0 md:block ${arrow}`}
+          >
+            <svg viewBox="0 0 8 12" className="h-3 w-2" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M1 1l5 5-5 5" />
+            </svg>
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => goTo(index + 1)}
-          disabled={index === total - 1}
-          aria-label={ui.sliderNext}
-          className="hidden rounded-md border border-hairline bg-paper p-2 text-slate transition-colors hover:border-accent hover:text-ink disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:block"
-        >
-          <svg viewBox="0 0 8 12" className="h-3 w-2" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M1 1l5 5-5 5" />
-          </svg>
-        </button>
+        <CollisionCard collision={active} />
       </div>
     </ScreenShell>
   );
