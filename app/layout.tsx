@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import {
-  DM_Sans,
+  Archivo,
   IBM_Plex_Mono,
+  IBM_Plex_Sans,
   Instrument_Serif,
-  Inter,
 } from "next/font/google";
 import "./globals.css";
 import ComplianceFooter from "@/src/components/ComplianceFooter";
+import NavPill from "@/src/components/NavPill";
 import { SourceProvider } from "@/src/components/SourceDrawer";
 import { masterNarrative } from "@/src/content/content";
 
@@ -17,15 +18,16 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -45,11 +47,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${inter.variable} ${dmSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${instrumentSerif.variable} ${archivo.variable} ${plexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-canvas font-body text-ink">
         <SourceProvider>
           {children}
+          <NavPill />
           <ComplianceFooter />
         </SourceProvider>
       </body>

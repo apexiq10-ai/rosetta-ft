@@ -6,23 +6,24 @@
    --------------------------------------------------------------------------- */
 
 @theme {
-  --color-canvas: #fafaf8;
+  --color-canvas: #f4f5f7;
   --color-ink: #0e1116;
   --color-slate: #5b6270;
-  --color-hairline: #e4e2dc;
+  --color-hairline: #e1e4e8;
   --color-accent: #1d4ed8;
   --color-accent-muted: #eef2ff;
   --color-paper: #ffffff;
-  --color-shade: #f3f1eb;
+  --color-shade: #eaecef;
 }
 
 /* Font roles. Serif carries narrative statements, sans carries headings and
    UI labels, body carries running copy, mono carries labels and citations.
-   Sans is Inter; it replaced Outfit after Phase B. */
+   Sans is Archivo, body is IBM Plex Sans. Plex Sans and Plex Mono are
+   designed together, so body copy and labels share a skeleton. */
 @theme inline {
   --font-serif: var(--font-instrument-serif), Georgia, serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-body: var(--font-dm-sans), system-ui, sans-serif;
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-body: var(--font-plex-sans), system-ui, sans-serif;
   --font-mono: var(--font-ibm-plex-mono), monospace;
 }
 
