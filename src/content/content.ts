@@ -207,8 +207,9 @@ export const sources: Source[] = [
 
 export const masterNarrative = {
   eyebrow: "The institution innovation group",
-  statement:
-    "The institution is not asking institutions to believe in a new asset class. It is rebuilding the infrastructure the existing ones already run on.",
+  statementLead: "The institution",
+  statementRest:
+    "didn't build a new asset class. It rebuilt the rails underneath it.",
   subhead:
     "A narrative architecture for innovation group, its Digital Assets team, and the active crypto strategy.",
   scrollCue: "The argument",
