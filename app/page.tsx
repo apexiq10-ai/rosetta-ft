@@ -1,4 +1,6 @@
 import Argument from "@/src/components/screens/Argument";
+import Cascade from "@/src/components/screens/Cascade";
+import Collisions from "@/src/components/screens/Collisions";
 import MasterNarrative from "@/src/components/screens/MasterNarrative";
 import Pillars from "@/src/components/screens/Pillars";
 
@@ -8,6 +10,8 @@ export default function Home() {
       <MasterNarrative />
       <Argument />
       <Pillars />
+      <Collisions />
+      <Cascade />
     </main>
   );
 }

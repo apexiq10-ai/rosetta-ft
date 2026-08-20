@@ -41,7 +41,28 @@
   animation: cue-pulse 3.6s ease-in-out infinite;
 }
 
+/* Cascade cell reveal. Keyed on the pillar/audience pair so switching a
+   selector replays it. */
+@keyframes cell-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-cell {
+  animation: cell-in 220ms ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .animate-cell {
+    animation: none;
+  }
+
   .animate-cue {
     animation: none;
     opacity: 0.7;
