@@ -24,4 +24,7 @@ export const ui = {
   sliderNext: "Next collision",
   sliderGoTo: "Go to collision",
   sliderPagination: "Collisions",
+  whyLabel: "Why",
+  whatLabel: "What",
+  howLabel: "How",
 };
