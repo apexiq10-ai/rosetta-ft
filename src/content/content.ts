@@ -50,6 +50,27 @@ export type CascadeCell = {
   sourceIds: string[];
 };
 
+export type AudienceTreatment = {
+  audienceId: Audience["id"];
+  audienceLabel: string;
+  message: string;
+  proof: string;
+  channel: string;
+  doNotSay: string;
+  sourceIds: string[];
+};
+
+export type StrategicBrief = {
+  pillarId: Pillar["id"];
+  title: string;
+  audienceInsight: string;
+  why: string;
+  what: string;
+  how: string;
+  treatments: AudienceTreatment[];
+  generatedAt: string;
+};
+
 // ----------------------------------------------------------------------------
 // SOURCES
 // Every factual claim on screen resolves to one of these. Rendered as a
