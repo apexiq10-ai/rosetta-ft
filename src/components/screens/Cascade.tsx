@@ -244,7 +244,10 @@ export default function Cascade() {
               type="button"
               onClick={downloadPdf}
               disabled={busy}
-              className="border border-accent bg-accent px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              // Hidden on mobile: the deck only renders one persona at a time,
+              // so a capture of it would be a partial canvas. The brief PDF
+              // carries all five audiences as text instead.
+              className="hidden border border-accent bg-accent px-6 py-3 md:block font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {ui.downloadCanvasPdf}
             </button>
