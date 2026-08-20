@@ -27,9 +27,15 @@ export const ui = {
   whyLabel: "Why",
   whatLabel: "What",
   howLabel: "How",
-  downloadPdf: "Download PDF",
+  downloadCanvasPdf: "Download canvas PDF",
   emailCanvas: "Email",
   emailSubject: "Franklin Templeton messaging canvas",
+  generateBrief: "Generate strategic brief",
+  thinking: "Thinking",
+  audienceInsightLabel: "Audience insight",
+  briefEmailSubject: "Franklin Templeton strategic brief",
+  downloadBriefPdf: "Download brief PDF",
+  emailBrief: "Email the strategic brief",
   emailAttachReminder:
-    "Remember to attach the PDF you just downloaded; mail clients cannot attach it automatically from a link.",
+    "Remember to attach the canvas PDF you just downloaded; mail clients cannot attach it automatically from a link.",
 };

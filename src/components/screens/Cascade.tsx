@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import BriefPanel from "../BriefPanel";
 import ScreenShell from "../ScreenShell";
 import SourceChip from "../SourceChip";
 import {
@@ -12,13 +13,8 @@ import {
   type CascadeCell,
   type Pillar,
 } from "@/src/content/content";
+import { pillarFields } from "@/src/lib/pillar";
 import { ui } from "@/src/content/ui";
-
-/** First sentence of a body paragraph, used as the "why" without rewriting it. */
-function firstSentence(text: string) {
-  const end = text.indexOf(". ");
-  return end === -1 ? text : text.slice(0, end + 1);
-}
 
 const CELL = "bg-paper p-6";
 
@@ -71,13 +67,13 @@ export default function Cascade() {
   const captureRef = useRef<HTMLDivElement | null>(null);
   const pillar = pillars.find((item) => item.id === selectedPillarId) ?? pillars[0];
 
-  const why = firstSentence(pillar.body);
+  const fields = pillarFields(pillar);
 
   // Stepped left to right so the row reads as a sequence rather than a tint.
   const hero: { label: string; value: string; surface: string }[] = [
-    { label: ui.whyLabel, value: why, surface: "bg-paper" },
-    { label: ui.whatLabel, value: pillar.statement, surface: "bg-canvas" },
-    { label: ui.howLabel, value: pillar.proof, surface: "bg-shade" },
+    { label: ui.whyLabel, value: fields.why, surface: "bg-paper" },
+    { label: ui.whatLabel, value: fields.what, surface: "bg-canvas" },
+    { label: ui.howLabel, value: fields.how, surface: "bg-shade" },
   ];
 
   const downloadPdf = async () => {
@@ -128,9 +124,9 @@ export default function Cascade() {
     `${ui.emailSubject} - ${pillar.shorthand}`,
   )}&body=${encodeURIComponent(
     [
-      `${ui.whyLabel}: ${why}`,
-      `${ui.whatLabel}: ${pillar.statement}`,
-      `${ui.howLabel}: ${pillar.proof}`,
+      `${ui.whyLabel}: ${fields.why}`,
+      `${ui.whatLabel}: ${fields.what}`,
+      `${ui.howLabel}: ${fields.how}`,
       "",
       ui.emailAttachReminder,
     ].join("\n"),
@@ -206,7 +202,7 @@ export default function Cascade() {
           disabled={busy}
           className="border border-accent bg-accent px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          {ui.downloadPdf}
+          {ui.downloadCanvasPdf}
         </button>
         <a
           href={mailto}
@@ -215,6 +211,8 @@ export default function Cascade() {
           {ui.emailCanvas}
         </a>
       </div>
+
+      <BriefPanel pillar={pillar} />
     </ScreenShell>
   );
 }
