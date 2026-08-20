@@ -38,6 +38,19 @@ function Quadrant({ label, tone, accent = false, children }: QuadrantProps) {
   );
 }
 
+function CollisionHeading({ collision, total }: { collision: Collision; total: number }) {
+  return (
+    <div className="border-b border-hairline p-6">
+      <p className="font-mono text-xs tracking-wide text-slate uppercase">
+        {pad(collision.index)} / {pad(total)}
+      </p>
+      <h3 className="mt-2 font-sans text-2xl leading-tight font-semibold text-ink">
+        {collision.title}
+      </h3>
+    </div>
+  );
+}
+
 function CollisionCard({ collision }: { collision: Collision }) {
   return (
     <div className="grid gap-px border border-hairline bg-hairline md:grid-cols-2">
@@ -90,7 +103,19 @@ export default function Collisions() {
         {collisionsIntro.standfirst}
       </p>
 
-      <div className="mt-10 border border-hairline bg-paper">
+      {/* Mobile: every collision in full, in normal scroll. Pagination is a
+          desktop affordance here; on a phone it only hides two thirds of the
+          argument behind a control. */}
+      <div className="mt-10 flex flex-col gap-8 md:hidden">
+        {collisions.map((collision) => (
+          <div key={collision.id} className="border border-hairline bg-paper">
+            <CollisionHeading collision={collision} total={total} />
+            <CollisionCard collision={collision} />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-10 hidden border border-hairline bg-paper md:block">
         {/* Pagination lives at the head of the card: tabs carry the titles, the
             arrows step through them. */}
         <div className="flex items-stretch gap-3 border-b border-hairline p-3">
