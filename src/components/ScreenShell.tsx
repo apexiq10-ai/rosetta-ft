@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
 
-type ScreenBackground = "canvas" | "paper" | "shade";
+type ScreenBackground = "canvas" | "paper" | "shade" | "accent";
 
 const backgrounds: Record<ScreenBackground, string> = {
   canvas: "bg-canvas",
   paper: "bg-paper",
   shade: "bg-shade",
+  accent: "bg-accent",
 };
 
 type ScreenShellProps = {

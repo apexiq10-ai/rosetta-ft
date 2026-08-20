@@ -3,21 +3,21 @@ import { masterNarrative } from "@/src/content/content";
 
 export default function MasterNarrative() {
   return (
-    <ScreenShell id="narrative" fill className="relative">
-      <p className="font-mono text-xs tracking-wide text-accent uppercase">
+    <ScreenShell id="narrative" bg="accent" fill className="relative">
+      <p className="font-mono text-xs tracking-wide text-paper uppercase">
         {masterNarrative.eyebrow}
       </p>
 
-      <h1 className="mt-8 max-w-4xl font-serif text-4xl leading-tight text-ink md:text-6xl">
+      <h1 className="mt-8 max-w-4xl font-serif text-4xl leading-tight text-black md:text-6xl">
         {masterNarrative.statement}
       </h1>
 
-      <p className="mt-8 max-w-[65ch] font-body text-base leading-relaxed text-slate md:text-lg">
+      <p className="mt-8 max-w-[65ch] font-body text-base leading-relaxed text-paper md:text-lg">
         {masterNarrative.subhead}
       </p>
 
       <div className="animate-cue absolute bottom-24 left-6 flex items-center gap-2 md:left-12">
-        <span className="font-mono text-xs tracking-wide text-slate uppercase">
+        <span className="font-mono text-xs tracking-wide text-paper uppercase">
           {masterNarrative.scrollCue}
         </span>
         <svg
@@ -26,7 +26,7 @@ export default function MasterNarrative() {
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="h-2 w-3 text-slate"
+          className="h-2 w-3 text-paper"
         >
           <path d="M1 1l5 5 5-5" />
         </svg>
