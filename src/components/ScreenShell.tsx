@@ -44,7 +44,7 @@ export default function ScreenShell({
       id={id}
       className={`flex w-full snap-start flex-col justify-center px-6 md:px-12 ${height} ${backgrounds[bg]} ${className}`}
     >
-      <div className="mx-auto w-full max-w-5xl">{children}</div>
+      <div className="mx-auto w-full max-w-7xl">{children}</div>
     </section>
   );
 }

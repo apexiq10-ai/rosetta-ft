@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import ScreenShell from "../ScreenShell";
+import SourceChip from "../SourceChip";
 import {
   audiences,
   cascade,
+  cascadeIntro,
   pillars,
   type Audience,
   type CascadeCell,
@@ -71,32 +73,35 @@ export function CascadeCellView({
 }) {
   return (
     <div key={`${cell.pillarId}-${cell.audienceId}`} className="animate-cell">
-      <p className="max-w-[65ch] font-mono text-xs leading-relaxed tracking-wide text-slate uppercase">
+      <p className="max-w-[70ch] font-mono text-xs leading-relaxed tracking-wide text-slate uppercase">
         {audience.who}
       </p>
-      <p className="mt-2 max-w-[65ch] font-body text-sm leading-relaxed text-slate">
+      <p className="mt-2 max-w-[70ch] font-body text-sm leading-relaxed text-slate">
         {audience.cares}
       </p>
 
-      <p className="mt-8 max-w-[65ch] font-sans text-2xl leading-snug font-semibold text-ink md:text-3xl">
+      <p className="mt-8 max-w-[70ch] font-sans text-2xl leading-snug font-semibold text-ink md:text-3xl">
         {cell.message}
       </p>
 
       <p className="mt-8 font-mono text-xs tracking-wide text-slate uppercase">
         {ui.proofLabel}
       </p>
-      <p className="mt-3 max-w-[65ch] font-body text-base leading-relaxed text-ink">
+      <p className="mt-3 max-w-[70ch] font-body text-base leading-relaxed text-ink">
         {cell.proof}
+        {cell.sourceIds.length > 0 ? (
+          <SourceChip sourceIds={cell.sourceIds} className="ml-2 align-middle" />
+        ) : null}
       </p>
 
       <p className="mt-8 font-mono text-xs tracking-wide text-slate uppercase">
         {ui.channelLabel}
       </p>
-      <p className="mt-3 max-w-[65ch] font-body text-base leading-relaxed text-ink">
+      <p className="mt-3 max-w-[70ch] font-body text-base leading-relaxed text-ink">
         {cell.channel}
       </p>
 
-      <div className="mt-10 max-w-[65ch] rounded-md bg-accent-muted p-6">
+      <div className="mt-10 max-w-[70ch] rounded-md bg-accent-muted p-6">
         <p className="font-mono text-xs tracking-wide text-accent uppercase">
           {ui.doNotSayLabel}
         </p>
@@ -126,6 +131,13 @@ export default function Cascade() {
 
   return (
     <ScreenShell id="cascade" bg="paper">
+      <h2 className="max-w-4xl font-sans text-3xl leading-tight font-semibold text-ink md:text-4xl">
+        {cascadeIntro.heading}
+      </h2>
+      <p className="mt-4 mb-10 max-w-[70ch] font-body text-base leading-relaxed text-slate md:text-lg">
+        {cascadeIntro.standfirst}
+      </p>
+
       <Selector
         label={ui.pillarSelectorLabel}
         options={pillars.map((pillar) => ({ id: pillar.id, label: pillar.shorthand }))}

@@ -19,4 +19,9 @@ export const ui = {
   evidenceLabel: "Evidence",
   costLabel: "Cost",
   resolutionLabel: "Resolution",
+  navToFramework: "Jump to the framework",
+  sliderPrevious: "Previous collision",
+  sliderNext: "Next collision",
+  sliderGoTo: "Go to collision",
+  sliderPagination: "Collisions",
 };

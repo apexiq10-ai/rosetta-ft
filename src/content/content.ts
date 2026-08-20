@@ -47,6 +47,7 @@ export type CascadeCell = {
   proof: string;
   channel: string;
   doNotSay: string;
+  sourceIds: string[];
 };
 
 // ----------------------------------------------------------------------------
@@ -331,6 +332,12 @@ export const collisions: Collision[] = [
 // The "do not say" field is the one hiring managers notice.
 // ----------------------------------------------------------------------------
 
+export const cascadeIntro = {
+  heading: "The same argument, aimed five ways.",
+  standfirst:
+    "Choose a pillar, then an audience. The underlying claim never changes. What changes is the emphasis, the proof that carries it, the channel it travels through, and the thing that must not be said.",
+};
+
 export const audiences: Audience[] = [
   {
     id: "allocator",
@@ -375,6 +382,7 @@ export const cascade: CascadeCell[] = [
     channel: "Consultant briefings, investment committee materials, allocator roundtables.",
     doNotSay:
       "Do not lead with blockchain. Lead with registered fund. The wrapper is the reassurance; the rails are the differentiation.",
+    sourceIds: ["s1"],
   },
   {
     pillarId: "rails",
@@ -385,6 +393,7 @@ export const cascade: CascadeCell[] = [
     channel: "Treasury and CFO publications, corporate liquidity events, direct BD enablement.",
     doNotSay:
       "Do not say tokenization. Treasurers buy operational outcomes, not technical categories. Say settlement, availability, reconciliation.",
+    sourceIds: ["s1", "s2"],
   },
   {
     pillarId: "rails",
@@ -395,6 +404,7 @@ export const cascade: CascadeCell[] = [
     channel: "Home office diligence packs, platform due diligence sessions.",
     doNotSay:
       "Do not present this as innovation. Present it as an operating record. Gatekeepers price novelty as risk.",
+    sourceIds: ["s2"],
   },
   {
     pillarId: "rails",
@@ -405,6 +415,7 @@ export const cascade: CascadeCell[] = [
     channel: "Protocol and infrastructure conferences, engineering-led content, technical podcasts.",
     doNotSay:
       "Do not claim to be crypto-native. Claim to be early and still running. Longevity is the credential this audience cannot dismiss.",
+    sourceIds: ["s1"],
   },
   {
     pillarId: "rails",
@@ -415,6 +426,7 @@ export const cascade: CascadeCell[] = [
     channel: "Exclusive with a tier-one outlet; executive byline as the follow.",
     doNotSay:
       "Do not pitch this as a crypto story. Pitch it as a market infrastructure story. Different desk, better reporter, longer shelf life.",
+    sourceIds: ["s2"],
   },
 
   // --- PERIMETER -------------------------------------------------------------
@@ -427,6 +439,7 @@ export const cascade: CascadeCell[] = [
     channel: "Consultant briefings, governance-focused thought leadership, IC-ready one-pagers.",
     doNotSay:
       "Do not overclaim the letter's scope. Describe precisely what it permits. Precision here is the entire value of the asset.",
+    sourceIds: ["s3"],
   },
   {
     pillarId: "perimeter",
@@ -437,6 +450,7 @@ export const cascade: CascadeCell[] = [
     channel: "Treasury media, collateral management forums, direct BD enablement.",
     doNotSay:
       "Do not mention crypto in this conversation at all. Nothing in this proposition requires it.",
+    sourceIds: ["s3"],
   },
   {
     pillarId: "perimeter",
@@ -447,6 +461,7 @@ export const cascade: CascadeCell[] = [
     channel: "Diligence packs, compliance-facing briefings, platform legal review.",
     doNotSay:
       "Do not frame this as a competitive advantage. Frame it as a reduction in their workload. Gatekeepers buy less work.",
+    sourceIds: ["s3"],
   },
   {
     pillarId: "perimeter",
@@ -457,6 +472,7 @@ export const cascade: CascadeCell[] = [
     channel: "Technical conferences, protocol partnership conversations, research notes.",
     doNotSay:
       "Do not position regulation as a constraint you tolerate. Position it as the moat you built. This audience respects the firm that did the hard version.",
+    sourceIds: ["s3"],
   },
   {
     pillarId: "perimeter",
@@ -467,6 +483,7 @@ export const cascade: CascadeCell[] = [
     channel: "Regulatory and market structure desks. Not the crypto desk.",
     doNotSay:
       "Do not let this be covered as a crypto win. It is a plumbing story, and plumbing stories are read by the people who allocate.",
+    sourceIds: ["s3"],
   },
 
   // --- DISCIPLINE ------------------------------------------------------------
@@ -479,6 +496,7 @@ export const cascade: CascadeCell[] = [
     channel: "Allocator roundtables, research-led thought leadership, consultant education.",
     doNotSay:
       "Do not defend the asset class. Defend the method. Allocators who need convincing on crypto are not this year's buyer.",
+    sourceIds: ["s4"],
   },
   {
     pillarId: "discipline",
@@ -488,6 +506,7 @@ export const cascade: CascadeCell[] = [
     channel: "None. Suppress.",
     doNotSay:
       "Do not cross-sell active strategies into a treasury conversation. It contaminates the operational credibility that made the conversation possible.",
+    sourceIds: [],
   },
   {
     pillarId: "discipline",
@@ -498,6 +517,7 @@ export const cascade: CascadeCell[] = [
     channel: "Platform diligence, manager research meetings.",
     doNotSay:
       "Do not emphasize the crypto-native pedigree of the acquired team. Emphasize the integration. Gatekeepers are underwriting the container.",
+    sourceIds: ["s4"],
   },
   {
     pillarId: "discipline",
@@ -508,6 +528,7 @@ export const cascade: CascadeCell[] = [
     channel: "Industry conferences, native media, direct counterparty conversations.",
     doNotSay:
       "Do not describe the acquisition as validation of crypto by traditional finance. That framing insults the audience you just bought.",
+    sourceIds: ["s4"],
   },
   {
     pillarId: "discipline",
@@ -518,6 +539,7 @@ export const cascade: CascadeCell[] = [
     channel: "Asset management and markets desks; CIO-level interviews.",
     doNotSay:
       "Do not repeat the institutional moment framing. It dates the coverage to the week it was published.",
+    sourceIds: ["s4"],
   },
 
   // --- REACH -----------------------------------------------------------------
@@ -530,6 +552,7 @@ export const cascade: CascadeCell[] = [
     channel: "Standard institutional channels. Reinforcement, not lead.",
     doNotSay:
       "Do not lead with heritage. Heritage is the closing argument, never the opening one. Leading with it makes the innovation sound borrowed.",
+    sourceIds: ["s6"],
   },
   {
     pillarId: "reach",
@@ -540,6 +563,7 @@ export const cascade: CascadeCell[] = [
     channel: "Corporate liquidity events, treasury associations, direct BD.",
     doNotSay:
       "Do not compare to crypto firms by name. The comparison is implicit and stronger unstated.",
+    sourceIds: ["s6"],
   },
   {
     pillarId: "reach",
@@ -550,6 +574,7 @@ export const cascade: CascadeCell[] = [
     channel: "Home office relationship management, platform expansion conversations.",
     doNotSay:
       "Do not treat digital assets as a separate business in this conversation. The whole advantage is that it is not.",
+    sourceIds: ["s6"],
   },
   {
     pillarId: "reach",
@@ -560,6 +585,7 @@ export const cascade: CascadeCell[] = [
     channel: "Partnership and business development conversations, ecosystem events.",
     doNotSay:
       "Do not lecture on regulation. Lead with distribution. It is the only thing in the conversation they cannot build themselves.",
+    sourceIds: ["s6", "s13", "s14"],
   },
   {
     pillarId: "reach",
@@ -570,6 +596,7 @@ export const cascade: CascadeCell[] = [
     channel: "Analysis and feature coverage; CEO or head of innovation interviews.",
     doNotSay:
       "Do not volunteer the AUM gap without the framing. Stated alone it is a weakness. Stated as the runway, it is the story.",
+    sourceIds: ["s5", "s6"],
   },
 ];
 

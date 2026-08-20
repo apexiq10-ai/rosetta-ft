@@ -13,7 +13,7 @@ export default function ComplianceFooter() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-canvas/92 backdrop-blur-sm">
-      <div className="mx-auto w-full max-w-5xl px-6 md:px-12">
+      <div className="mx-auto w-full max-w-7xl px-6 md:px-12">
         <button
           type="button"
           onClick={() => setExpanded((value) => !value)}
