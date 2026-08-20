@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import BriefPanel from "../BriefPanel";
+import SwipeDeck from "../SwipeDeck";
 import ScreenShell from "../ScreenShell";
 import SourceChip from "../SourceChip";
 import {
@@ -18,17 +19,27 @@ import { ui } from "@/src/content/ui";
 
 const CELL = "bg-paper p-6";
 
-function PersonaColumn({ audience, cell }: { audience: Audience; cell: CascadeCell }) {
+function PersonaColumn({
+  audience,
+  cell,
+  variant,
+}: {
+  audience: Audience;
+  cell: CascadeCell;
+  variant: "track" | "card";
+}) {
   // A cell with nothing to cite is making no claim, which is what the suppress
   // state is. Derived from the data rather than named in code.
   const suppressed = cell.sourceIds.length === 0;
+  // The subgrid track only means anything inside the five column grid; on its
+  // own the same cells stack, with the hairline gaps still doing the dividing.
+  const wrapper =
+    variant === "track"
+      ? "grid w-full grid-rows-subgrid row-span-6 gap-px"
+      : "flex w-full flex-col gap-px border border-hairline bg-hairline";
 
   return (
-    <div
-      className={`grid w-full snap-start grid-rows-subgrid row-span-6 gap-px ${
-        suppressed ? "opacity-60" : ""
-      }`}
-    >
+    <div className={`${wrapper} ${suppressed ? "opacity-60" : ""}`}>
       <div className={CELL}>
         <h3 className="font-sans text-2xl leading-tight font-semibold text-ink">
           {audience.label}
@@ -182,14 +193,44 @@ export default function Cascade() {
         {/* One grid for all five personas: each field type is its own row track,
             so a long bullet in one column sets the height of that row in every
             column instead of pushing its own column out of step. */}
-        <div className="mt-10 snap-x snap-mandatory overflow-x-auto border border-hairline [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Mobile: one persona at a time. Five columns cannot fit a phone, and
+            stacking all five buries content meant to be compared. */}
+        <div className="mt-10 md:hidden">
+          <SwipeDeck
+            label={ui.audienceSelectorLabel}
+            items={audiences.flatMap((audience) => {
+              const cell = cascade.find(
+                (item) => item.pillarId === pillar.id && item.audienceId === audience.id,
+              );
+              if (!cell) return [];
+              return [
+                {
+                  id: audience.id,
+                  label: audience.label,
+                  node: (
+                    <PersonaColumn audience={audience} cell={cell} variant="card" />
+                  ),
+                },
+              ];
+            })}
+          />
+        </div>
+
+        <div className="mt-10 hidden snap-x snap-mandatory overflow-x-auto border border-hairline [scrollbar-width:none] md:block [&::-webkit-scrollbar]:hidden">
           <div className="grid grid-cols-[repeat(5,minmax(15rem,1fr))] grid-rows-[auto_auto_auto_auto_auto_auto] gap-px bg-hairline">
             {audiences.map((audience) => {
               const cell = cascade.find(
                 (item) => item.pillarId === pillar.id && item.audienceId === audience.id,
               );
               if (!cell) return null;
-              return <PersonaColumn key={audience.id} audience={audience} cell={cell} />;
+              return (
+                <PersonaColumn
+                  key={audience.id}
+                  audience={audience}
+                  cell={cell}
+                  variant="track"
+                />
+              );
             })}
           </div>
         </div>

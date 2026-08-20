@@ -75,12 +75,16 @@ export default function Pillars() {
       {pillars.map((pillar, position) => (
         <ScreenShell key={pillar.id} id={`pillar-${pillar.id}`} fill className="md:hidden">
           {position === 0 ? <SectionHeader /> : null}
-          <p className="font-mono text-xs tracking-wide text-slate uppercase">
-            {pad(pillar.index)} / {pad(total)}
-          </p>
-          <div className="mt-8">
-            <PillarBody pillar={pillar} variant="screen" />
-          </div>
+          {/* Same chrome as the desktop card: mobile was rendering the body
+              straight onto the canvas with no border, surface or padding. */}
+          <article className="border border-hairline bg-paper p-6 shadow-sm">
+            <p className="font-mono text-xs tracking-wide text-slate uppercase">
+              {pad(pillar.index)} / {pad(total)}
+            </p>
+            <div className="mt-6">
+              <PillarBody pillar={pillar} variant="screen" />
+            </div>
+          </article>
         </ScreenShell>
       ))}
 
