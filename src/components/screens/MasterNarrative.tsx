@@ -24,14 +24,12 @@ export default function MasterNarrative() {
       backdrop={<HeroBackdrop />}
     >
       {/* One gap value throughout, so the rhythm is the layout rather than a
-          margin decided separately on each element. The eyebrow and its rule
-          span both columns, so the headline and the stage share a top edge. */}
+          margin decided separately on each element. The eyebrow spans both
+          columns, so the headline and the stage share a top edge. */}
       <div className="flex flex-col gap-8">
         <p className="animate-enter font-mono text-xs tracking-wide text-paper uppercase">
           {masterNarrative.eyebrow}
         </p>
-
-        <Rule step="enter-step-2" />
 
         {/* Statement on the left, the framework replaying itself on the right.
             Stacked below the large breakpoint, where the stage goes full width. */}

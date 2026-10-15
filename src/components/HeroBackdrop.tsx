@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
-// The field behind the hero: a dot grid, a sparse network of square nodes,
-// and light pulses travelling the elbowed edges between them. Pure SVG and
-// CSS, laid out in a 1440 x 900 space and cropped to cover the section.
+// The field behind the hero: a dot grid and a sparse scatter of square nodes,
+// a few of which breathe. Pure SVG and CSS, laid out in a 1440 x 900 space
+// and cropped to cover the section.
 // Kept to the margins of the layout so it never competes with the copy.
 // ---------------------------------------------------------------------------
 
@@ -26,36 +26,8 @@ const NODES: [number, number][] = [
   [472, 872], // 17
 ];
 
-const EDGES: [number, number][] = [
-  [0, 1],
-  [0, 2],
-  [2, 3],
-  [3, 4],
-  [4, 5],
-  [1, 6],
-  [6, 7],
-  [7, 8],
-  [8, 9],
-  [9, 10],
-  [10, 11],
-  [11, 12],
-  [12, 13],
-  [13, 14],
-  [13, 15],
-  [15, 16],
-  [16, 17],
-  [17, 5],
-];
-
 /** Nodes that breathe. The rest sit still, so the field never feels busy. */
 const LIVE = new Set([2, 7, 11, 13, 16]);
-
-function elbow([a, b]: [number, number]) {
-  const [x1, y1] = NODES[a];
-  const [x2, y2] = NODES[b];
-  const mid = Math.round((x1 + x2) / 2);
-  return `M${x1} ${y1} H${mid} V${y2} H${x2}`;
-}
 
 export default function HeroBackdrop() {
   return (
@@ -73,32 +45,6 @@ export default function HeroBackdrop() {
       </defs>
 
       <rect width="1440" height="900" fill="url(#hero-grid)" />
-
-      {EDGES.map((edge) => (
-        <path
-          key={`edge-${edge.join("-")}`}
-          d={elbow(edge)}
-          className="stroke-paper"
-          strokeOpacity="0.16"
-          strokeWidth="1"
-        />
-      ))}
-
-      {/* Every other edge carries a pulse, each on its own clock. */}
-      {EDGES.filter((_, i) => i % 2 === 0).map((edge, i) => (
-        <path
-          key={`pulse-${edge.join("-")}`}
-          d={elbow(edge)}
-          pathLength={1}
-          className="hero-pulse stroke-paper"
-          strokeWidth="1.5"
-          strokeLinecap="square"
-          style={{
-            animationDuration: `${5 + (i % 4) * 1.3}s`,
-            animationDelay: `${(i * 0.9) % 6}s`,
-          }}
-        />
-      ))}
 
       {NODES.map(([x, y], i) => (
         <g key={`node-${i}`}>

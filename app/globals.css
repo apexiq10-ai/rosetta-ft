@@ -15,11 +15,12 @@
   --color-paper: #ffffff;
   --color-shade: #eaecef;
   /* The single intentional exception to the blue accent: it marks generating
-     new content as a different kind of action from exporting existing content. */
-  --color-generate: #166534;
-  /* Hero stage only: marks the places the published story contradicts
-     itself. Never used as a UI action colour. */
-  --color-collide: #c2410c;
+     new content as a different kind of action from exporting existing content.
+     Saturated enough to read as live, dark enough to hold white text at AA. */
+  --color-generate: #00875a;
+  /* Hero stage: marks the places the published story contradicts itself.
+     Shares the generate green so the hero carries one secondary colour. */
+  --color-collide: var(--color-generate);
 }
 
 /* Font roles. Serif carries narrative statements, sans carries headings and
@@ -199,24 +200,6 @@
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 
-/* Hero backdrop: a short dash runs the length of an edge, then rests. The
-   dash period is longer than the path, so it never wraps back into view. */
-@keyframes hero-pulse {
-  0% {
-    stroke-dashoffset: 0.07;
-  }
-  55%,
-  100% {
-    stroke-dashoffset: -1;
-  }
-}
-
-.hero-pulse {
-  stroke-dasharray: 0.07 2;
-  stroke-opacity: 0.75;
-  animation: hero-pulse linear infinite;
-}
-
 @keyframes hero-node {
   0% {
     transform: scale(0.4);
@@ -252,7 +235,6 @@
     animation: none;
   }
 
-  .hero-pulse,
   .hero-node-ring {
     animation: none;
     opacity: 0;
