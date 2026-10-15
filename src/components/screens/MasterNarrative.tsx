@@ -1,4 +1,3 @@
-import HeroBackdrop from "../HeroBackdrop";
 import HeroStage from "../HeroStage";
 import HeroTicker from "../HeroTicker";
 import ScreenShell from "../ScreenShell";
@@ -16,13 +15,7 @@ function Rule({ step }: { step: string }) {
 
 export default function MasterNarrative() {
   return (
-    <ScreenShell
-      id="narrative"
-      bg="accent"
-      fill
-      className="overflow-hidden"
-      backdrop={<HeroBackdrop />}
-    >
+    <ScreenShell id="narrative" bg="accent" fill className="overflow-hidden">
       {/* One gap value throughout, so the rhythm is the layout rather than a
           margin decided separately on each element. The eyebrow spans both
           columns, so the headline and the stage share a top edge. */}
