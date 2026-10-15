@@ -20,6 +20,8 @@ type ScreenShellProps = {
    * keeps shorter sections from opening up dead space below the fold.
    */
   fill?: boolean;
+  /** Decorative layer painted behind the content, edge to edge. */
+  backdrop?: ReactNode;
 };
 
 /**
@@ -33,6 +35,7 @@ export default function ScreenShell({
   id,
   className = "",
   fill = false,
+  backdrop,
 }: ScreenShellProps) {
   // The extra bottom padding on filled sections keeps the compliance bar off
   // the content it would otherwise sit on top of.
@@ -43,9 +46,10 @@ export default function ScreenShell({
   return (
     <section
       id={id}
-      className={`flex w-full snap-start flex-col justify-center px-6 md:px-12 ${height} ${backgrounds[bg]} ${className}`}
+      className={`relative flex w-full snap-start flex-col justify-center px-6 md:px-12 ${height} ${backgrounds[bg]} ${className}`}
     >
-      <div className="mx-auto w-full max-w-7xl">{children}</div>
+      {backdrop}
+      <div className="relative mx-auto w-full max-w-7xl">{children}</div>
     </section>
   );
 }

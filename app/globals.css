@@ -199,6 +199,42 @@
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 
+/* Hero backdrop: a short dash runs the length of an edge, then rests. The
+   dash period is longer than the path, so it never wraps back into view. */
+@keyframes hero-pulse {
+  0% {
+    stroke-dashoffset: 0.07;
+  }
+  55%,
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+.hero-pulse {
+  stroke-dasharray: 0.07 2;
+  stroke-opacity: 0.75;
+  animation: hero-pulse linear infinite;
+}
+
+@keyframes hero-node {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.hero-node-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hero-node 4s ease-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-enter,
   .animate-enter-rule {
@@ -214,6 +250,12 @@
   .hero-dot,
   .hero-marquee {
     animation: none;
+  }
+
+  .hero-pulse,
+  .hero-node-ring {
+    animation: none;
+    opacity: 0;
   }
 
   .animate-cue {
