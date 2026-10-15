@@ -9,7 +9,8 @@ export type Source = {
   claim: string;
   publisher: string;
   date: string;
-  url: string;
+  /** Omitted for illustrative entries, which stand in for a real citation. */
+  url?: string;
 };
 
 export type Pillar = {
@@ -75,128 +76,117 @@ export type StrategicBrief = {
 // SOURCES
 // Every factual claim on screen resolves to one of these. Rendered as a
 // numbered chip next to the claim, opening a drawer with publisher and date.
+// The institution is a composite, so each entry names the kind of public
+// record a live engagement would cite rather than linking to one.
 // ----------------------------------------------------------------------------
+
+const ILLUSTRATIVE = "Illustrative evidence";
 
 export const sources: Source[] = [
   {
     id: "s1",
     claim:
-      "The institution launched the first US registered mutual fund to use public blockchains to process transactions and record share ownership.",
-    publisher: "The institution",
-    date: "Accessed August 2026",
-    url: "https://example.com/source",
+      "The onchain money market fund is a US registered fund that uses public blockchains to process transactions and record share ownership.",
+    publisher: "Fund registration statement",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s2",
     claim:
-      "The institution has transformed the platform brand into a white-label blockchain service for other banks, operating as both an asset manager and a provider of crypto infrastructure.",
-    publisher: "Fortune",
-    date: "June 23, 2026",
-    url: "https://example.com/source",
+      "The tokenization platform behind the fund is now licensed as white-label infrastructure to other banks, making the firm both an asset manager and an infrastructure provider.",
+    publisher: "Trade press ranking",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s3",
     claim:
-      "The SEC issued a no-action letter to the institution allowing registered funds to use the onchain money market fund the onchain fund for cash management, including as securities lending collateral.",
-    publisher: "The digital assets team",
-    date: "2026",
-    url: "https://example.com/social",
+      "A regulatory no-action letter permits registered funds to use the onchain money market fund for cash management, including as securities lending collateral.",
+    publisher: "Regulatory correspondence",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s4",
     claim:
-      "The institution agreed to acquire an acquired manager and launched the active crypto strategy under the strategy's co-head and a co-head alongside a portfolio lead, reporting to the head of innovation, Head of Innovation.",
-    publisher: "Business Wire",
-    date: "April 1, 2026",
-    url: "https://www.businesswire.com/news/home/20260401198396/en",
+      "The firm acquired a crypto-native investment manager and relaunched its team as an active crypto strategy, reporting into the head of innovation.",
+    publisher: "Acquisition press release",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s5",
     claim:
-      "The digital assets team managed approximately $1.8 billion in global assets as of December 31, 2025.",
-    publisher: "Business Wire",
-    date: "April 1, 2026",
-    url: "https://www.businesswire.com/news/home/20260401198396/en",
+      "The digital assets business manages a book measured in single-digit billions, inside a firm whose total assets are measured in trillions.",
+    publisher: "Acquisition press release",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s6",
     claim:
-      "The institution operates in more than 30 countries, serves clients in more than 150 countries, and employs over 1,500 investment professionals.",
-    publisher: "The institution, via role posting",
-    date: "2026",
-    url: "https://builtin.com/job/vp-business-development-liquidity-exchange-services/7482421",
+      "The firm operates across dozens of countries, serves clients in well over a hundred, and employs a deep bench of investment professionals.",
+    publisher: "Corporate fact sheet",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s7",
     claim:
-      "The Digital Assets team sits within the firm's innovation business group and has been active in digital assets since 2018.",
-    publisher: "The institution, via role posting",
-    date: "2026",
-    url: "https://builtin.com/job/vp-business-development-liquidity-exchange-services/7482421",
+      "The digital assets team sits within the firm's innovation business group and has been active in the asset class for years.",
+    publisher: "Role posting",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s8",
     claim:
-      "Part of the an acquired manager consideration will be paid using the platform tokens, the digital asset securities representing shares of the onchain money market fund.",
-    publisher: "CNBC",
-    date: "April 1, 2026",
-    url: "https://example.com/source",
+      "Part of the acquisition consideration is paid in platform tokens, the digital securities representing shares of the onchain money market fund.",
+    publisher: "Financial press",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s9",
     claim:
-      "Bitcoin was down roughly 41 percent over the prior six months and 21 percent year to date at the time of the active crypto strategy announcement.",
-    publisher: "CNBC, citing CoinMetrics",
-    date: "April 1, 2026",
-    url: "https://example.com/source",
+      "Bitcoin was down by double digits over the prior six months at the time the active crypto strategy launched.",
+    publisher: "Financial press, citing market data",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s10",
     claim:
-      "The strategy's co-head, on the launch of the active crypto strategy: crypto's institutional moment has arrived.",
-    publisher: "Business Wire",
-    date: "April 1, 2026",
-    url: "https://www.businesswire.com/news/home/20260401198396/en",
+      "Launch messaging for the active crypto strategy: crypto's institutional moment has arrived.",
+    publisher: "Acquisition press release",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s11",
     claim:
-      "The institution launched the crypto index ETF tracking the CF Institutional Digital Asset Index, with custody by Coinbase, following an ETF in January 2024 and an ETF in July 2024.",
-    publisher: "Business Wire",
-    date: "February 20, 2025",
-    url: "https://www.businesswire.com/news/home/20250220096361/en",
+      "The firm runs a shelf of crypto exchange-traded products, including an index ETF with third-party custody.",
+    publisher: "Product press releases",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s12",
     claim:
-      "The digital assets team social presence describes the firm as a global asset manager decoding markets and a future onchain, in a register distinct from the institutional site.",
-    publisher: "The digital assets team, X",
-    date: "Accessed August 2026",
-    url: "https://example.com/social",
+      "The digital assets social channel speaks in a native, community register distinct from the institutional site.",
+    publisher: "Social channel",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s13",
     claim:
-      "The institution is working with MoonPay to help large investors swap stablecoins for yield-bearing tokens.",
-    publisher: "Fortune",
-    date: "June 23, 2026",
-    url: "https://example.com/source",
+      "The firm is working with an on-ramp provider to help large investors swap stablecoins for yield-bearing tokens.",
+    publisher: "Trade press ranking",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s14",
     claim:
-      "The institution and Binance announced a partnership focused on tokenization and digital asset product development.",
-    publisher: "Yahoo Finance",
-    date: "September 2025",
-    url: "https://example.com/source",
+      "The firm announced a partnership with a major crypto exchange focused on tokenization and digital asset product development.",
+    publisher: "Financial press",
+    date: ILLUSTRATIVE,
   },
   {
     id: "s15",
     claim:
-      "The institution was founded in 1947 and built its name in value investing and actively managed mutual funds before establishing a digital assets team in 2018.",
-    publisher: "Fortune",
-    date: "June 23, 2026",
-    url: "https://example.com/source",
+      "The firm built its name over decades in value investing and actively managed funds before standing up a digital assets team.",
+    publisher: "Trade press ranking",
+    date: ILLUSTRATIVE,
   },
 ];
 
@@ -206,13 +196,65 @@ export const sources: Source[] = [
 // ----------------------------------------------------------------------------
 
 export const masterNarrative = {
-  eyebrow: "The institution innovation group",
-  statementLead: "The institution",
+  eyebrow: "Rosetta / Narrative architecture",
+  statementLead: "Your institution",
   statementRest:
     "didn't build a new asset class. It rebuilt the rails underneath it.",
   subhead:
-    "A narrative architecture for innovation group, its Digital Assets team, and the active crypto strategy.",
+    "A narrative architecture for your innovation group, your digital assets team, and your active crypto strategy.",
   scrollCue: "The argument",
+};
+
+// ----------------------------------------------------------------------------
+// SCREEN 1: HERO STAGE
+// The looping product theater beside the statement. It replays the page in
+// miniature: scattered sources, the collisions between them, the pillars they
+// resolve into, the cascade across audiences, and the generated brief.
+// Pillar, audience and collision names are read from their own arrays below.
+// ----------------------------------------------------------------------------
+
+export const heroStage = {
+  label: "How the framework is built",
+  steps: [
+    { id: "source", title: "Source", detail: "Every claim cited" },
+    { id: "collide", title: "Collide", detail: "Where the story fights itself" },
+    { id: "prove", title: "Prove", detail: "Four pillars" },
+    { id: "cascade", title: "Cascade", detail: "Five audiences" },
+    { id: "brief", title: "Brief", detail: "Generated on demand" },
+  ],
+  documents: [
+    { id: "release", label: "Press release", phrase: "the institutional moment has arrived", sourceId: "s10" },
+    { id: "social", label: "Social channel", phrase: "gm. the future is onchain", sourceId: "s12" },
+    { id: "letter", label: "Regulatory letter", phrase: "eligible as lending collateral", sourceId: "s3" },
+    { id: "filing", label: "Fund filing", phrase: "registered fund on public chains", sourceId: "s1" },
+    { id: "coverage", label: "Trade press", phrase: "white-label rails for other banks", sourceId: "s2" },
+  ],
+  /** Each pair of documents that contradicts itself, and the collision it raises. */
+  collisionPairs: [
+    { from: "release", to: "social", collisionId: "voice" },
+    { from: "filing", to: "coverage", collisionId: "brand" },
+  ],
+  collisionLabel: "Collision",
+  storiesLabel: "5 sources. 5 stories.",
+  /** Short forms of the Rails row of the canvas, sized for the stage. */
+  cascadeLines: [
+    { audienceId: "allocator", message: "Lead with registered fund.", avoid: "blockchain" },
+    { audienceId: "treasurer", message: "Settlement on your schedule.", avoid: "tokenization" },
+    { audienceId: "gatekeeper", message: "An operating record, not a pilot.", avoid: "innovation" },
+    { audienceId: "native", message: "Early, and still running.", avoid: "crypto-native" },
+    { audienceId: "press", message: "A market infrastructure story.", avoid: "crypto story" },
+  ],
+  briefInsight:
+    "Across all five audiences the proof is the operating record, not the technology. Every door opens on settlement, eligibility, or longevity. None of them opens on the word blockchain.",
+  ticker: {
+    label: "The framework at a glance",
+    claims: "Claims sourced",
+    collisions: "Collisions resolved",
+    pillars: "Pillars proven",
+    audiences: "Audience doors",
+    messages: "Messages cascaded",
+    rules: "Do-not-say rules",
+  },
 };
 
 // ----------------------------------------------------------------------------
@@ -223,9 +265,9 @@ export const masterNarrative = {
 export const argument = {
   heading: "The problem is not the products.",
   paragraphs: [
-    "The institution holds the most complete digital asset position of any traditional asset manager. A registered fund running on public blockchains. A regulator-blessed collateral use case. White-label infrastructure other banks are buying. Three exchange-traded products. An active crypto team acquired from the crypto-native side of the market.",
-    "It also holds five separate stories about them. An allocator hearing all five concludes that the institution is broad. An allocator hearing one concludes that the institution is leading.",
-    "Digital Assets manages roughly $1.8 billion inside a $1.6 trillion firm. That gap is not a product gap. The institution has products competitors cannot match. It is a narrative gap, and narrative gaps are the only kind a communications function can close.",
+    "Your institution holds one of the most complete digital asset positions of any traditional asset manager. A registered fund running on public blockchains. A regulator-blessed collateral use case. White-label infrastructure other banks are buying. A shelf of exchange-traded products. An active crypto team acquired from the crypto-native side of the market.",
+    "It also holds five separate stories about them. An allocator hearing all five concludes that the firm is broad. An allocator hearing one concludes that the firm is leading.",
+    "The digital assets book is measured in billions inside a firm measured in trillions. That gap is not a product gap. The firm has products competitors cannot match. It is a narrative gap, and narrative gaps are the only kind a communications function can close.",
   ],
   sourceIds: ["s5", "s6"],
 };
@@ -248,9 +290,9 @@ export const pillars: Pillar[] = [
     shorthand: "Rails",
     statement: "We built the rails.",
     body:
-      "The onchain fund has been operating as a registered fund on public blockchains since before the current cycle began. The platform is no longer a product the institution sells. It is infrastructure other institutions run on.",
+      "The onchain money market fund has been operating as a registered fund on public blockchains since before the current cycle began. The platform is no longer a product the firm sells. It is infrastructure other institutions run on.",
     proof:
-      "First US registered mutual fund to use public blockchains to process transactions and record share ownership. Now extended as a white-label service for other banks.",
+      "A US registered fund using public blockchains to process transactions and record share ownership. Now extended as a white-label service for other banks.",
     sourceIds: ["s1", "s2"],
   },
   {
@@ -259,9 +301,9 @@ export const pillars: Pillar[] = [
     shorthand: "Perimeter",
     statement: "We moved the perimeter.",
     body:
-      "Competitors sell exposure inside the regulatory perimeter. The institution got the perimeter moved. This is the most valuable and least marketed asset in the entire portfolio.",
+      "Competitors sell exposure inside the regulatory perimeter. Your institution got the perimeter moved. This is the most valuable and least marketed asset in the entire portfolio.",
     proof:
-      "SEC no-action letter permitting registered funds to use the onchain fund for cash management, including as securities lending collateral.",
+      "SEC no-action letter permitting registered funds to use the onchain money market fund for cash management, including as securities lending collateral.",
     sourceIds: ["s3"],
   },
   {
@@ -272,7 +314,7 @@ export const pillars: Pillar[] = [
     body:
       "A market this inefficient deserves active research. The active crypto strategy is not a bet that prices go up. It is a bet that dispersion in this asset class is wide enough to reward the same discipline that built the firm.",
     proof:
-      "The active crypto strategy launched April 2026, bringing crypto-native active management under the institution's research and risk framework.",
+      "An acquired crypto-native team, now running active strategies under the firm's research and risk framework.",
     sourceIds: ["s4", "s15"],
   },
   {
@@ -281,9 +323,9 @@ export const pillars: Pillar[] = [
     shorthand: "Reach",
     statement: "We own the distribution.",
     body:
-      "Every crypto-native competitor can hire researchers and build custody. None of them can acquire seventy-nine years of institutional relationships. Distribution is the one asset in this market that cannot be forked.",
+      "Every crypto-native competitor can hire researchers and build custody. None of them can acquire decades of institutional relationships. Distribution is the one asset in this market that cannot be forked.",
     proof:
-      "Operations in more than 30 countries, clients in more than 150, over 1,500 investment professionals.",
+      "Operations across dozens of countries, clients in well over a hundred, and a deep bench of investment professionals.",
     sourceIds: ["s6", "s15"],
   },
 ];
@@ -304,18 +346,18 @@ export const collisions: Collision[] = [
   {
     id: "brand",
     index: 1,
-    title: "The platform is doing three jobs.",
+    title: "One brand is doing three jobs.",
     tension:
-      "One name is carrying a consumer investment brand, a business-to-business infrastructure service sold to banks, and a settlement instrument used in corporate acquisition consideration.",
+      "One platform name is carrying a consumer investment brand, a business-to-business infrastructure service sold to banks, and a settlement instrument used in corporate acquisition consideration.",
     evidence: [
-      "The platform as the consumer-facing brand for onchain investing.",
-      "The platform as white-label blockchain infrastructure licensed to other banks.",
-      "The platform tokens used as partial consideration in the an acquired manager acquisition.",
+      "The platform name as the consumer-facing brand for onchain investing.",
+      "The platform name as white-label blockchain infrastructure licensed to other banks.",
+      "Platform tokens used as partial consideration in an acquisition.",
     ],
     cost:
       "A treasurer evaluating settlement infrastructure and a retail investor downloading an app are meeting the same brand and drawing opposite conclusions about what it is for. Infrastructure buyers read consumer marketing as a signal that the thing is not serious.",
     resolution:
-      "The platform becomes the infrastructure brand, singular. The retail surface moves under the institution masterbrand. Infrastructure brands earn trust by being boring, narrow, and impossible to confuse with anything else.",
+      "The platform name becomes the infrastructure brand, singular. The retail surface moves under the corporate masterbrand. Infrastructure brands earn trust by being boring, narrow, and impossible to confuse with anything else.",
     sourceIds: ["s1", "s2", "s8"],
   },
   {
@@ -323,7 +365,7 @@ export const collisions: Collision[] = [
     index: 2,
     title: "Two voices, one firm.",
     tension:
-      "The institutional channels speak in the register of a seventy-nine-year-old fiduciary. The digital assets channels speak in the register of a crypto-native account. Both are good at their job. Together they tell an allocator the firm has not decided what it is.",
+      "The institutional channels speak in the register of a decades-old fiduciary. The digital assets channels speak in the register of a crypto-native account. Both are good at their job. Together they tell an allocator the firm has not decided what it is.",
     evidence: [
       "Institutional site language built around fiduciary caution and role-gated access.",
       "Digital assets social presence built around native idiom and community register.",
@@ -340,14 +382,14 @@ export const collisions: Collision[] = [
     index: 3,
     title: "The moment claim reprices with the asset.",
     tension:
-      "The active crypto strategy launched on the claim that crypto's institutional moment has arrived, in a week when bitcoin was down roughly forty-one percent over six months. The market can falsify that claim on any given Tuesday.",
+      "The active crypto strategy launched on the claim that crypto's institutional moment has arrived, in a stretch when bitcoin was down by double digits over six months. The market can falsify that claim on any given Tuesday.",
     evidence: [
       "Launch narrative anchored to a market-timing assertion.",
       "Asset prices materially below prior highs at announcement.",
       "The structural case, settlement and collateral, left largely unmarketed.",
     ],
     cost:
-      "A narrative built on a price thesis has to be re-argued every quarter. Worse, it invites the comparison the institution should never invite: judged as a crypto manager rather than as the firm rebuilding the plumbing.",
+      "A narrative built on a price thesis has to be re-argued every quarter. Worse, it invites the comparison the firm should never invite: judged as a crypto manager rather than as the firm rebuilding the plumbing.",
     resolution:
       "Replace the moment claim with a structural claim. The institutional moment is not a price event, it is a settlement event. Money market funds becoming eligible collateral on public infrastructure is a change to market structure, and market structure does not get marked to market.",
     sourceIds: ["s9", "s10", "s3"],
@@ -394,7 +436,7 @@ export const audiences: Audience[] = [
   {
     id: "press",
     label: "Tier-one financial press",
-    who: "Bloomberg, FT, WSJ, CoinDesk, Barron's",
+    who: "Bloomberg, Financial Times, WSJ, CoinDesk, Barron's",
     cares: "The first, the number, and the tension.",
   },
 ];
@@ -406,7 +448,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "allocator",
     message:
       "This is not a pilot. It is a registered fund that has been settling on public infrastructure through multiple market cycles.",
-    proof: "First US registered mutual fund to record share ownership on public blockchains.",
+    proof: "A US registered fund recording share ownership on public blockchains.",
     channel: "Consultant briefings, investment committee materials, allocator roundtables.",
     doNotSay:
       "Do not lead with blockchain. Lead with registered fund. The wrapper is the reassurance; the rails are the differentiation.",
@@ -417,7 +459,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "treasurer",
     message:
       "Your cash can settle on infrastructure that operates on your schedule rather than the market's.",
-    proof: "The onchain fund operating as an onchain money market fund; the platform licensed to other institutions.",
+    proof: "The onchain money market fund in operation; the platform licensed to other institutions.",
     channel: "Treasury and CFO publications, corporate liquidity events, direct BD enablement.",
     doNotSay:
       "Do not say tokenization. Treasurers buy operational outcomes, not technical categories. Say settlement, availability, reconciliation.",
@@ -428,7 +470,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "gatekeeper",
     message:
       "The product is a money market fund. The infrastructure underneath it has been in production for years and is now licensed to other regulated institutions.",
-    proof: "White-label the platform adopted by other banks.",
+    proof: "White-label platform adopted by other banks.",
     channel: "Home office diligence packs, platform due diligence sessions.",
     doNotSay:
       "Do not present this as innovation. Present it as an operating record. Gatekeepers price novelty as risk.",
@@ -450,7 +492,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "press",
     message:
       "The asset manager that built the rails is now selling them to its competitors.",
-    proof: "The platform extended into white-label infrastructure for other banks.",
+    proof: "Platform extended into white-label infrastructure for other banks.",
     channel: "Exclusive with a tier-one outlet; executive byline as the follow.",
     doNotSay:
       "Do not pitch this as a crypto story. Pitch it as a market infrastructure story. Different desk, better reporter, longer shelf life.",
@@ -463,7 +505,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "allocator",
     message:
       "The regulator has already answered the question your investment committee is going to ask.",
-    proof: "SEC no-action letter permitting the onchain fund use for cash management including securities lending collateral.",
+    proof: "SEC no-action letter permitting use of the onchain fund for cash management including securities lending collateral.",
     channel: "Consultant briefings, governance-focused thought leadership, IC-ready one-pagers.",
     doNotSay:
       "Do not overclaim the letter's scope. Describe precisely what it permits. Precision here is the entire value of the asset.",
@@ -520,7 +562,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "allocator",
     message:
       "Dispersion in this asset class is wide enough to reward research. We have applied the same framework here that we apply everywhere else.",
-    proof: "The active crypto strategy operating under the firm's research and risk framework.",
+    proof: "Active crypto strategy operating under the firm's research and risk framework.",
     channel: "Allocator roundtables, research-led thought leadership, consultant education.",
     doNotSay:
       "Do not defend the asset class. Defend the method. Allocators who need convincing on crypto are not this year's buyer.",
@@ -541,7 +583,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "gatekeeper",
     message:
       "Active management with documented process, run inside an existing risk and compliance framework rather than bolted onto one.",
-    proof: "The active crypto strategy integrated under the firm's innovation group leadership.",
+    proof: "Active crypto strategy integrated under the firm's innovation group leadership.",
     channel: "Platform diligence, manager research meetings.",
     doNotSay:
       "Do not emphasize the crypto-native pedigree of the acquired team. Emphasize the integration. Gatekeepers are underwriting the container.",
@@ -552,7 +594,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "native",
     message:
       "The team is the team you already know. The balance sheet and the distribution behind it are new.",
-    proof: "an acquired manager investment team and liquid strategies now operating as the active crypto strategy.",
+    proof: "Acquired investment team and liquid strategies now operating under the firm's name.",
     channel: "Industry conferences, native media, direct counterparty conversations.",
     doNotSay:
       "Do not describe the acquisition as validation of crypto by traditional finance. That framing insults the audience you just bought.",
@@ -562,8 +604,8 @@ export const cascade: CascadeCell[] = [
     pillarId: "discipline",
     audienceId: "press",
     message:
-      "A seventy-nine-year-old active manager thinks this asset class is inefficient enough to be worth researching. That is a more interesting claim than a price call.",
-    proof: "The active crypto strategy launch, April 2026.",
+      "A decades-old active manager thinks this asset class is inefficient enough to be worth researching. That is a more interesting claim than a price call.",
+    proof: "Active crypto strategy launch.",
     channel: "Asset management and markets desks; CIO-level interviews.",
     doNotSay:
       "Do not repeat the institutional moment framing. It dates the coverage to the week it was published.",
@@ -575,8 +617,8 @@ export const cascade: CascadeCell[] = [
     pillarId: "reach",
     audienceId: "allocator",
     message:
-      "You are not underwriting a startup's survival. You are underwriting a firm that has been serving institutions since 1947.",
-    proof: "Operations in more than 30 countries; clients in more than 150.",
+      "You are not underwriting a startup's survival. You are underwriting a firm that has been serving institutions for generations.",
+    proof: "Operations across dozens of countries; clients in well over a hundred.",
     channel: "Standard institutional channels. Reinforcement, not lead.",
     doNotSay:
       "Do not lead with heritage. Heritage is the closing argument, never the opening one. Leading with it makes the innovation sound borrowed.",
@@ -587,7 +629,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "treasurer",
     message:
       "Multinational treasury needs a counterparty that operates in your jurisdictions. Most digital asset providers operate in one.",
-    proof: "Presence in more than 30 countries.",
+    proof: "Presence across dozens of countries.",
     channel: "Corporate liquidity events, treasury associations, direct BD.",
     doNotSay:
       "Do not compare to crypto firms by name. The comparison is implicit and stronger unstated.",
@@ -608,7 +650,7 @@ export const cascade: CascadeCell[] = [
     pillarId: "reach",
     audienceId: "native",
     message:
-      "Whatever you build, we can put it in front of institutions in more than 150 countries. That is the part you cannot fork.",
+      "Whatever you build, we can put it in front of institutions in well over a hundred countries. That is the part you cannot fork.",
     proof: "Global distribution footprint; existing partnership activity across exchanges and infrastructure providers.",
     channel: "Partnership and business development conversations, ecosystem events.",
     doNotSay:
@@ -620,7 +662,7 @@ export const cascade: CascadeCell[] = [
     audienceId: "press",
     message:
       "The distribution question is the one nobody is asking. Products are easy to launch and impossible to sell.",
-    proof: "Firm scale against a digital assets book of roughly $1.8 billion.",
+    proof: "Firm scale against a digital assets book measured in billions.",
     channel: "Analysis and feature coverage; CEO or head of innovation interviews.",
     doNotSay:
       "Do not volunteer the AUM gap without the framing. Stated alone it is a weakness. Stated as the runway, it is the story.",
@@ -636,7 +678,7 @@ export const close = {
   heading: "One story. Four proofs. Five doors.",
   paragraphs: [
     "A messaging framework is only worth building if it survives contact with a channel calendar, a conference schedule, and a business development conversation that has to close.",
-    "This one does, because every claim in it is already true and already published. Nothing here requires the institution to become something it is not. It requires the firm to say one thing consistently that it currently says five ways.",
+    "This one does, because every claim in it is already true and already published. Nothing here requires your institution to become something it is not. It requires the firm to say one thing consistently that it currently says five ways.",
   ],
   cta: {
     label: "Arthur Daglish",
@@ -651,7 +693,7 @@ export const close = {
 
 export const compliance = {
   short:
-    "Independent concept work. Not affiliated with or endorsed by the institution.",
+    "Independent concept work. The institution is a composite and the evidence is illustrative.",
   long:
-    "This is independent concept work prepared for interview discussion. It is not affiliated with, reviewed by, sponsored by, or endorsed by the institution or any of its affiliates. All company facts are drawn from public disclosures and press coverage, cited with publisher and date. Nothing here constitutes investment advice, a recommendation, an offer, or a solicitation. No forward-looking statements, performance claims, or asset projections are made or implied. The institution, innovation group, the platform, the onchain fund, an ETF, an ETF, and an ETF are the property of their respective owners and are referenced for identification only.",
+    "This is independent concept work prepared for discussion. The institution described is a composite of a traditional asset manager with a digital assets franchise; it does not name, represent, or speak for any specific firm, and it is not affiliated with, reviewed by, sponsored by, or endorsed by any financial institution. Evidence entries are illustrative placeholders for the public filings, releases, and coverage a live engagement would cite. Nothing here constitutes investment advice, a recommendation, an offer, or a solicitation. No forward-looking statements, performance claims, or asset projections are made or implied.",
 };

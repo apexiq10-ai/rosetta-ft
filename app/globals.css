@@ -17,6 +17,9 @@
   /* The single intentional exception to the blue accent: it marks generating
      new content as a different kind of action from exporting existing content. */
   --color-generate: #166534;
+  /* Hero stage only: marks the places the published story contradicts
+     itself. Never used as a UI action colour. */
+  --color-collide: #c2410c;
 }
 
 /* Font roles. Serif carries narrative statements, sans carries headings and
@@ -102,6 +105,100 @@
   animation-delay: 300ms;
 }
 
+/* ---------------------------------------------------------------------------
+   Hero stage. The looping framework replay beside the opening statement.
+   --------------------------------------------------------------------------- */
+
+.hero-dots {
+  background-color: var(--color-canvas);
+  background-image: radial-gradient(circle, #d3d7de 1px, transparent 1.3px);
+  background-size: 16px 16px;
+}
+
+/* Step progress: fills over the length of the step it belongs to. */
+@keyframes hero-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-fill {
+  animation: hero-fill linear forwards;
+}
+
+/* Click ring under the cursor. */
+@keyframes hero-ping {
+  from {
+    transform: translate(-30%, -30%) scale(0.3);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate(-30%, -30%) scale(1.8);
+    opacity: 0;
+  }
+}
+
+.hero-ping {
+  animation: hero-ping 700ms ease-out forwards;
+}
+
+/* Collision lines crawl, so they read as live tension rather than a rule. */
+@keyframes hero-march {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+.hero-march {
+  animation: hero-march 900ms linear infinite;
+}
+
+@keyframes hero-press {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: scale(0.95);
+  }
+}
+
+.hero-press {
+  animation: hero-press 320ms ease-out;
+}
+
+@keyframes hero-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.2;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.hero-dot {
+  animation: hero-dot 1s ease-in-out infinite;
+}
+
+@keyframes hero-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.hero-marquee {
+  animation: hero-marquee 38s linear infinite;
+}
+
+.hero-fade {
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-enter,
   .animate-enter-rule {
@@ -110,7 +207,12 @@
     transform: none;
   }
 
-  .animate-cell {
+  .animate-cell,
+  .hero-ping,
+  .hero-march,
+  .hero-press,
+  .hero-dot,
+  .hero-marquee {
     animation: none;
   }
 

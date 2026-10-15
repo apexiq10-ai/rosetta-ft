@@ -41,8 +41,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: masterNarrative.eyebrow,
   description: masterNarrative.subhead,
-  // Unreleased concept work naming a real public company: keep it out of
-  // search results rather than relying on the URL staying unknown.
+  // Unreleased concept work: keep it out of search results rather than
+  // relying on the URL staying unknown.
   robots: {
     index: false,
     follow: false,

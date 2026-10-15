@@ -154,14 +154,20 @@ export function SourceProvider({ children }: { children: ReactNode }) {
             <p className="mt-1 font-mono text-xs tracking-wide text-slate uppercase">
               {source.date}
             </p>
-            <a
-              href={source.url}
-              target="_blank"
-              rel="noopener"
-              className="mt-6 inline-block max-w-full break-all font-mono text-xs text-accent underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              {source.url}
-            </a>
+            {source.url ? (
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener"
+                className="mt-6 inline-block max-w-full break-all font-mono text-xs text-accent underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {source.url}
+              </a>
+            ) : (
+              <p className="mt-6 max-w-[65ch] border-l-2 border-hairline pl-4 font-body text-sm leading-relaxed text-slate">
+                {ui.drawerIllustrative}
+              </p>
+            )}
           </div>
         ) : null}
       </div>

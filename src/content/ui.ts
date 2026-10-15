@@ -9,6 +9,8 @@ export const ui = {
   drawerTitle: "Source",
   drawerClose: "Close source detail",
   drawerVisit: "Open source",
+  drawerIllustrative:
+    "Illustrative evidence. In a live engagement this entry links to the filing, release, or coverage it summarizes.",
   complianceToggle: "Compliance detail",
   pillarSelectorLabel: "Pillar",
   audienceSelectorLabel: "Audience",
@@ -29,11 +31,11 @@ export const ui = {
   howLabel: "How",
   downloadCanvasPdf: "Download canvas PDF",
   emailCanvas: "Email",
-  emailSubject: "The institution messaging canvas",
+  emailSubject: "Rosetta messaging canvas",
   generateBrief: "Generate strategic brief",
   thinking: "Thinking",
   audienceInsightLabel: "Audience insight",
-  briefEmailSubject: "The institution strategic brief",
+  briefEmailSubject: "Rosetta strategic brief",
   downloadBriefPdf: "Download brief PDF",
   emailBrief: "Email the strategic brief",
   emailAttachReminder:
