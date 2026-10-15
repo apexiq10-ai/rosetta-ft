@@ -105,7 +105,7 @@ HARD CONSTRAINTS:
 
 **Actions on the brief itself**, once generated:
 - **Download PDF**: use jsPDF directly with text layout (not html2canvas) since this is structured text content and deserves proper typeset output, not a screenshot. Title, headings, and body text styled distinctly within the PDF. Filename: `rosetta-brief-{pillarId}.pdf`.
-- **Email**: mailto link with the brief's full text content assembled into the body (title, audience insight, why/what/how, all five treatments in plain text). No attachment needed here, unlike the canvas email - the brief's content fits directly in an email body, so make it complete and readable inline. Subject: "The institution strategic brief - {pillar label}".
+- **Email**: mailto link with the brief's full text content assembled into the body (title, audience insight, why/what/how, all five treatments in plain text). No attachment needed here, unlike the canvas email - the brief's content fits directly in an email body, so make it complete and readable inline. Subject: "Rosetta strategic brief - {pillar label}".
 
 **State:** local to `BriefPanel`. `status` (`idle | loading | success | error`), `brief` (the parsed response or null), keyed per pillar so switching tabs and coming back doesn't require regenerating if already fetched once in this session (client-side cache mirrors the server-side one).
 
