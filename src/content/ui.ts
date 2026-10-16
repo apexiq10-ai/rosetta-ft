@@ -35,7 +35,6 @@ export const ui = {
   generateBrief: "Generate sales play",
   thinking: "Building the play",
   playTitleSuffix: "sales play",
-  playFailedLabel: "The play could not be generated",
   playThesisLabel: "The play",
   playRunWhenLabel: "Run this play when",
   playEntryLabel: "Open with",

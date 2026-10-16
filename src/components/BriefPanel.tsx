@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import SourceChip from "./SourceChip";
 import { sources, type Pillar, type SalesPlay } from "@/src/content/content";
 import { ui } from "@/src/content/ui";
+import { plays } from "@/src/lib/play";
+
+const REVEAL_MS = 1000;
 
 const PRIMARY =
   "border border-accent bg-accent px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -80,48 +83,34 @@ export default function BriefPanel({
   pillar: Pillar;
   actions?: ReactNode;
 }) {
-  const [plays, setPlays] = useState<Record<string, SalesPlay>>({});
+  // Which pillars the reader has opened. The plays themselves are prebuilt.
+  const [opened, setOpened] = useState<Record<string, boolean>>({});
   const [loadingId, setLoadingId] = useState<string | null>(null);
-  const [failure, setFailure] = useState<{ id: string; message: string } | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const play = plays[pillar.id];
-  const status: "idle" | "loading" | "success" | "error" =
-    loadingId === pillar.id
-      ? "loading"
-      : play
-        ? "success"
-        : failure?.id === pillar.id
-          ? "error"
-          : "idle";
+  useEffect(() => () => {
+    if (timer.current) clearTimeout(timer.current);
+  }, []);
 
-  const generate = async () => {
-    if (status === "loading") return;
-    // Already generated: take the reader to it rather than appearing inert.
+  const play = opened[pillar.id] ? plays[pillar.id] : undefined;
+  const loading = loadingId === pillar.id;
+
+  const generate = () => {
+    if (loadingId) return;
+    // Already open: take the reader to it rather than appearing inert.
     if (play) {
-      document.getElementById(`play-${pillar.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document
+        .getElementById(`play-${pillar.id}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
-    setLoadingId(pillar.id);
-    setFailure(null);
-    try {
-      const response = await fetch("/api/brief", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pillarId: pillar.id }),
-      });
-      const data: unknown = await response.json();
-      if (!response.ok) {
-        const message =
-          (data as { error?: string })?.error ?? "Could not generate the play.";
-        setFailure({ id: pillar.id, message });
-        return;
-      }
-      setPlays((current) => ({ ...current, [pillar.id]: data as SalesPlay }));
-    } catch {
-      setFailure({ id: pillar.id, message: "Could not reach the play service." });
-    } finally {
+    // A short, deliberate beat so the play reads as assembled, not pasted.
+    const id = pillar.id;
+    setLoadingId(id);
+    timer.current = setTimeout(() => {
+      setOpened((current) => ({ ...current, [id]: true }));
       setLoadingId(null);
-    }
+    }, REVEAL_MS);
   };
 
   // Typeset with jsPDF rather than captured as an image: this is structured
@@ -162,8 +151,7 @@ export default function BriefPanel({
       write(text, 13, "bold", 8);
     };
 
-    write(play.title, 20, "bold", 6);
-    write(new Date(play.generatedAt).toUTCString(), 9, "normal", 16);
+    write(play.title, 20, "bold", 12);
     write(play.thesis, 11, "normal", 14);
 
     heading(ui.playRunWhenLabel);
@@ -219,19 +207,22 @@ export default function BriefPanel({
         <button
           type="button"
           onClick={generate}
-          disabled={status === "loading"}
-          className={GENERATE}
+          aria-busy={loading}
+          className={`${GENERATE} inline-flex items-center gap-3`}
         >
-          {status === "loading" ? ui.thinking : `${ui.generateBrief} - ${pillar.shorthand}`}
+          {loading ? (
+            <>
+              <span
+                aria-hidden
+                className="h-4 w-4 animate-spin rounded-full border-2 border-paper/40 border-t-paper motion-reduce:animate-none"
+              />
+              {ui.thinking}
+            </>
+          ) : (
+            `${ui.generateBrief} - ${pillar.shorthand}`
+          )}
         </button>
       </div>
-
-      {status === "error" && failure ? (
-        <div role="alert" className="mt-6 border-l-4 border-accent bg-accent-muted p-4">
-          <p className="font-sans text-sm font-semibold text-ink">{ui.playFailedLabel}</p>
-          <p className="mt-1 font-body text-sm leading-relaxed text-ink">{failure.message}</p>
-        </div>
-      ) : null}
 
       {play ? (
         <article id={`play-${pillar.id}`} className="mt-8 scroll-mt-24 border border-hairline bg-paper">

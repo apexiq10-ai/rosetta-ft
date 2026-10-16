@@ -98,8 +98,8 @@ export type SuppressedSeat = {
 /**
  * The sales play for one pillar. The canvas says what each seat hears; the
  * play says who the seller calls first, in what order, what to ask, and how
- * to answer pushback. Strategy is generated; every factual assertion resolves
- * to a source id the server has already validated against this pillar.
+ * to answer pushback. Every factual assertion resolves to a source id that is
+ * validated against this pillar at build time.
  */
 export type SalesPlay = {
   pillarId: Pillar["id"];
@@ -114,7 +114,29 @@ export type SalesPlay = {
   objections: PlayObjection[];
   suppressed: SuppressedSeat[];
   exitCriteria: string[];
-  generatedAt: string;
+};
+
+/** Authored play content. Labels, suppressed seats and the entry seat are derived. */
+export type SalesPlayContent = {
+  thesis: string;
+  runWhen: string[];
+  entryRationale: string;
+  sequence: {
+    audienceId: Audience["id"];
+    objective: string;
+    move: string;
+    asset: string;
+    advanceWhen: string;
+    sourceIds: string[];
+  }[];
+  discovery: { audienceId: Audience["id"]; question: string; listenFor: string }[];
+  objections: {
+    audienceId: Audience["id"];
+    objection: string;
+    response: string;
+    sourceIds: string[];
+  }[];
+  exitCriteria: string[];
 };
 
 // ----------------------------------------------------------------------------
@@ -716,6 +738,401 @@ export const cascade: CascadeCell[] = [
     sourceIds: ["s5", "s6"],
   },
 ];
+
+// ----------------------------------------------------------------------------
+// SCREEN 4B: SALES PLAYS
+// One per pillar. The canvas says what each seat hears; the play says who the
+// seller calls first, in what order, what to ask, and how to answer pushback.
+// Validated at build time: every seat must be active for the pillar and every
+// source id must be in scope, or the build fails. The entry seat is the first
+// step of the sequence.
+// ----------------------------------------------------------------------------
+
+export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
+  rails: {
+    thesis:
+      "Sell the operating record, not the technology. Clear diligence first, then let a market structure story pull allocators and treasurers in.",
+    runWhen: [
+      "The account holds money market funds and is reviewing cash or settlement operations.",
+      "A platform or consultant has asked for digital assets diligence materials.",
+      "The buyer has seen tokenization pilots elsewhere and doubts any reached production.",
+    ],
+    entryRationale:
+      "Gatekeepers decide who is allowed to buy. Clearing them first turns every later meeting into a purchase decision, not a permission request.",
+    sequence: [
+      {
+        audienceId: "gatekeeper",
+        objective: "Clear the fund as an operating product, not a pilot.",
+        move: "Walk the home office through the production record and the banks now licensing the platform.",
+        asset: "Home office diligence pack.",
+        advanceWhen: "Diligence signs off or names its open items.",
+        sourceIds: ["s1", "s2"],
+      },
+      {
+        audienceId: "press",
+        objective: "Make the market structure story public before the sales push.",
+        move: "Offer one tier-one outlet the exclusive on banks running the firm's rails.",
+        asset: "Exclusive briefing, executive byline as the follow.",
+        advanceWhen: "Coverage files on the markets or infrastructure desk.",
+        sourceIds: ["s2"],
+      },
+      {
+        audienceId: "allocator",
+        objective: "Get the fund onto the investment committee agenda.",
+        move: "Lead with the registered fund wrapper, then show it has settled through multiple market cycles.",
+        asset: "IC-ready one-pager and consultant briefing.",
+        advanceWhen: "A consultant requests a manager meeting.",
+        sourceIds: ["s1"],
+      },
+      {
+        audienceId: "treasurer",
+        objective: "Convert interest into a funded cash allocation.",
+        move: "Frame it as settlement, availability, and reconciliation on the treasurer's schedule.",
+        asset: "Treasury operations walkthrough with business development.",
+        advanceWhen: "Treasury opens onboarding.",
+        sourceIds: ["s1", "s2"],
+      },
+    ],
+    discovery: [
+      {
+        audienceId: "gatekeeper",
+        question: "What would a digital assets product need to show your diligence team before it reaches the platform?",
+        listenFor: "Operating history. Rails answers it directly.",
+      },
+      {
+        audienceId: "allocator",
+        question: "When your committee last discussed digital assets, was the question exposure or infrastructure?",
+        listenFor: "Exposure. Reframe to infrastructure and price leaves the room.",
+      },
+      {
+        audienceId: "treasurer",
+        question: "Where does cash sit idle because settlement windows will not let it move?",
+        listenFor: "Named cut-offs, weekend gaps, or manual reconciliation.",
+      },
+      {
+        audienceId: "native",
+        question: "What do you need from a registered fund before you integrate it?",
+        listenFor: "A track record. Longevity is the credential.",
+      },
+    ],
+    objections: [
+      {
+        audienceId: "gatekeeper",
+        objection: "We do not onboard experimental products.",
+        response:
+          "It is a registered fund with years in production, and other banks now license the platform. The record is the diligence answer.",
+        sourceIds: ["s1", "s2"],
+      },
+      {
+        audienceId: "treasurer",
+        objection: "Is this just tokenization marketing?",
+        response:
+          "It is a settlement decision. The fund is in operation, and the infrastructure under it is licensed to other institutions.",
+        sourceIds: ["s1", "s2"],
+      },
+      {
+        audienceId: "press",
+        objection: "Isn't this the same brand as your consumer app?",
+        response:
+          "The name carries several jobs today. The story is infrastructure other banks are buying, which belongs on the markets desk.",
+        sourceIds: ["s2", "s8"],
+      },
+    ],
+    exitCriteria: [
+      "Diligence clears the fund for at least one platform.",
+      "A consultant puts it on an investment committee agenda.",
+      "A treasury team opens onboarding.",
+    ],
+  },
+
+  perimeter: {
+    thesis:
+      "The regulator has already answered the committee's hardest question. State the letter precisely and sell less work and better collateral, not crypto.",
+    runWhen: [
+      "The account runs securities lending or manages collateral against cash balances.",
+      "Compliance has stalled a digital assets review on regulatory grounds.",
+      "The buyer cites regulatory uncertainty as the reason to wait.",
+    ],
+    entryRationale:
+      "Compliance is where these deals die. A documented regulatory answer turns the gatekeeper from blocker into the person who clears the path.",
+    sequence: [
+      {
+        audienceId: "gatekeeper",
+        objective: "Retire the regulatory objection on the record.",
+        move: "Take platform legal through exactly what the no-action relief permits, and nothing beyond it.",
+        asset: "Compliance briefing on the letter's scope.",
+        advanceWhen: "Legal records the regulatory question as closed.",
+        sourceIds: ["s3"],
+      },
+      {
+        audienceId: "allocator",
+        objective: "Put the collateral use case in front of the committee.",
+        move: "Show that registered funds may use the onchain fund for cash management, including as securities lending collateral.",
+        asset: "IC one-pager on the letter.",
+        advanceWhen: "The committee asks how it fits existing cash or lending mandates.",
+        sourceIds: ["s3"],
+      },
+      {
+        audienceId: "treasurer",
+        objective: "Turn eligibility into a balance sheet decision.",
+        move: "Position idle cash that also works as collateral. Leave crypto out of the conversation entirely.",
+        asset: "Collateral management walkthrough.",
+        advanceWhen: "Treasury and collateral teams meet on it together.",
+        sourceIds: ["s3"],
+      },
+      {
+        audienceId: "press",
+        objective: "Land it as a market structure story.",
+        move: "Brief the regulatory and market structure desks on what changed for collateral markets.",
+        asset: "Desk briefing on the letter.",
+        advanceWhen: "Coverage runs outside the crypto desk.",
+        sourceIds: ["s3"],
+      },
+    ],
+    discovery: [
+      {
+        audienceId: "gatekeeper",
+        question: "Which regulatory question has blocked digital assets reviews on your platform before?",
+        listenFor: "Eligibility. That is the question the letter addresses.",
+      },
+      {
+        audienceId: "allocator",
+        question: "If regulatory standing were settled, what would your committee still need to see?",
+        listenFor: "Mandate fit and governance. Both are answerable.",
+      },
+      {
+        audienceId: "treasurer",
+        question: "How much of your cash is held separately from your collateral today?",
+        listenFor: "A meaningful split. That duplication is the opening.",
+      },
+      {
+        audienceId: "native",
+        question: "What would regulated collateral change on your product roadmap?",
+        listenFor: "Use cases or counterparties that were blocked without it.",
+      },
+    ],
+    objections: [
+      {
+        audienceId: "allocator",
+        objection: "A no-action letter is not an approval.",
+        response:
+          "Correct, and it should be described exactly as written. It permits registered funds to use the onchain fund for cash management, including as securities lending collateral.",
+        sourceIds: ["s3"],
+      },
+      {
+        audienceId: "treasurer",
+        objection: "We are not putting that kind of risk on the balance sheet.",
+        response:
+          "Nothing here asks you to. It is a money market fund that registered funds are permitted to use as collateral.",
+        sourceIds: ["s3"],
+      },
+      {
+        audienceId: "native",
+        objection: "Regulation slows everything down.",
+        response:
+          "Here it did the opposite. Regulated collateral arrived through the registered fund channel, which is the version the market can build on.",
+        sourceIds: ["s3"],
+      },
+    ],
+    exitCriteria: [
+      "Platform legal records the regulatory question as closed.",
+      "A collateral or securities lending desk joins the conversation.",
+      "Coverage runs on a market structure desk.",
+    ],
+  },
+
+  discipline: {
+    thesis:
+      "Sell the method, not the asset class. A known team inside the firm's risk framework, betting that dispersion rewards research, never on where prices go next.",
+    runWhen: [
+      "The allocator holds passive crypto exposure and is asking what active adds.",
+      "Manager research is evaluating crypto strategies and wants process, not conviction.",
+      "The committee or coverage is anchored on price direction.",
+    ],
+    entryRationale:
+      "An acquisition puts relationships at risk first. Lock in the counterparties who know the team, then take the method to the people who underwrite it.",
+    sequence: [
+      {
+        audienceId: "native",
+        objective: "Keep the counterparties who already know the team.",
+        move: "Confirm the team is unchanged, with the firm's balance sheet and distribution now behind it.",
+        asset: "Direct counterparty conversations.",
+        advanceWhen: "Counterparties confirm existing relationships continue.",
+        sourceIds: ["s4"],
+      },
+      {
+        audienceId: "gatekeeper",
+        objective: "Get the strategy underwritten as a process, not a team bet.",
+        move: "Show how the acquired team runs inside the firm's research and risk framework rather than beside it.",
+        asset: "Manager research meeting with the framework documented.",
+        advanceWhen: "Research approves a full due diligence review.",
+        sourceIds: ["s4"],
+      },
+      {
+        audienceId: "allocator",
+        objective: "Move the conversation from price to method.",
+        move: "Argue that dispersion rewards research, using the discipline that built the firm.",
+        asset: "Research-led allocator roundtable.",
+        advanceWhen: "An allocator asks for the process deep dive.",
+        sourceIds: ["s4", "s15"],
+      },
+      {
+        audienceId: "press",
+        objective: "Replace the launch narrative with a method story.",
+        move: "Pitch the inefficiency thesis to markets desks through a CIO interview.",
+        asset: "CIO interview.",
+        advanceWhen: "Coverage cites the method rather than a price call.",
+        sourceIds: ["s4"],
+      },
+    ],
+    discovery: [
+      {
+        audienceId: "allocator",
+        question: "What would an active strategy have to show you that passive exposure cannot?",
+        listenFor: "Dispersion or risk control. Both are method arguments.",
+      },
+      {
+        audienceId: "allocator",
+        question: "How is your committee judging crypto managers today: returns or process?",
+        listenFor: "Returns. Move them to process before the market does it for you.",
+      },
+      {
+        audienceId: "gatekeeper",
+        question: "How do you underwrite a strategy whose team was acquired?",
+        listenFor: "Integration and controls. That is the container the firm can document.",
+      },
+      {
+        audienceId: "native",
+        question: "What did you need to hear when the team changed ownership?",
+        listenFor: "Continuity. Answer with the same team and new distribution.",
+      },
+    ],
+    objections: [
+      {
+        audienceId: "allocator",
+        objection: "Your launch said the institutional moment had arrived, and prices fell.",
+        response:
+          "The strategy does not depend on a price call. It is a bet that dispersion rewards research, run under the firm's risk framework.",
+        sourceIds: ["s4", "s9", "s10"],
+      },
+      {
+        audienceId: "gatekeeper",
+        objection: "This is a crypto-native team with a new logo.",
+        response:
+          "The team now runs inside the firm's research and risk framework, reporting into the innovation group. Underwrite the container, not the pedigree.",
+        sourceIds: ["s4"],
+      },
+      {
+        audienceId: "native",
+        objection: "Traditional finance just bought its way in.",
+        response:
+          "The team you know still runs the strategies. What changed is the balance sheet and distribution behind them.",
+        sourceIds: ["s4"],
+      },
+    ],
+    exitCriteria: [
+      "Manager research opens a full due diligence review.",
+      "An allocator schedules the process deep dive.",
+      "Coverage frames the strategy as method, not a price call.",
+    ],
+  },
+
+  reach: {
+    thesis:
+      "Distribution is the one asset in this market that cannot be forked. Start where approval already exists and sell digital assets as an extension, never a new counterparty.",
+    runWhen: [
+      "The account already has an approved relationship with the firm's fund complex.",
+      "A multinational treasury is weighing providers that operate in one jurisdiction.",
+      "A crypto-native partner has product but no route to institutional buyers.",
+    ],
+    entryRationale:
+      "The firm is already on the platform. Starting where approval exists makes every later step an extension rather than a new counterparty review.",
+    sequence: [
+      {
+        audienceId: "gatekeeper",
+        objective: "Treat digital assets as an extension of the existing relationship.",
+        move: "Bring it through the current home office relationship rather than a fresh onboarding.",
+        asset: "Platform expansion conversation.",
+        advanceWhen: "The platform reviews it under the existing relationship.",
+        sourceIds: ["s6"],
+      },
+      {
+        audienceId: "allocator",
+        objective: "Close the survival question.",
+        move: "Use the firm's scale and history as the closing argument, after the product case is made.",
+        asset: "Standard institutional channels.",
+        advanceWhen: "Counterparty longevity stops coming up.",
+        sourceIds: ["s6", "s15"],
+      },
+      {
+        audienceId: "treasurer",
+        objective: "Win multinational treasury on jurisdiction coverage.",
+        move: "Map the firm's footprint against the treasurer's entities. Leave competitors unnamed.",
+        asset: "Treasury association and liquidity events.",
+        advanceWhen: "Treasury maps its entities against the footprint.",
+        sourceIds: ["s6"],
+      },
+      {
+        audienceId: "native",
+        objective: "Turn distribution into partnerships.",
+        move: "Offer institutional distribution as the thing a partner cannot build alone.",
+        asset: "Partnership and business development conversations.",
+        advanceWhen: "A partner proposes a distribution agreement.",
+        sourceIds: ["s6", "s13", "s14"],
+      },
+    ],
+    discovery: [
+      {
+        audienceId: "gatekeeper",
+        question: "Which of the firm's funds are already approved on your platform?",
+        listenFor: "Any. Each one shortens the path.",
+      },
+      {
+        audienceId: "treasurer",
+        question: "How many jurisdictions does your treasury operate in, and how many does your digital assets provider cover?",
+        listenFor: "A mismatch. That gap is the opening.",
+      },
+      {
+        audienceId: "native",
+        question: "Who are your institutional buyers today, and how do you reach them?",
+        listenFor: "No reliable route. Distribution is the offer.",
+      },
+      {
+        audienceId: "allocator",
+        question: "What would make your committee comfortable on counterparty longevity?",
+        listenFor: "Scale and history. Bring them as the close, not the opening.",
+      },
+    ],
+    objections: [
+      {
+        audienceId: "allocator",
+        objection: "Your digital assets book is small for a firm your size.",
+        response:
+          "That gap is the point. The reach behind it, dozens of countries and clients in well over a hundred, is what no new entrant can acquire.",
+        sourceIds: ["s5", "s6"],
+      },
+      {
+        audienceId: "gatekeeper",
+        objection: "Digital assets means a new counterparty review.",
+        response:
+          "It is the firm you have already approved, extending an existing relationship rather than adding a counterparty.",
+        sourceIds: ["s6"],
+      },
+      {
+        audienceId: "native",
+        objection: "Incumbents move too slowly to partner with.",
+        response:
+          "The firm already works with an on-ramp provider and a major exchange. The offer is distribution you cannot build yourself.",
+        sourceIds: ["s13", "s14"],
+      },
+    ],
+    exitCriteria: [
+      "A platform reviews digital assets under the existing relationship.",
+      "A multinational treasury shortlists the firm on jurisdiction coverage.",
+      "A partner proposes a distribution agreement.",
+    ],
+  },
+};
 
 // ----------------------------------------------------------------------------
 // SCREEN 5: CLOSE
