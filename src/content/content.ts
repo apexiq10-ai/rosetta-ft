@@ -61,14 +61,59 @@ export type AudienceTreatment = {
   sourceIds: string[];
 };
 
-export type StrategicBrief = {
+/** One touch in the play: who the seller is in front of, and what moves the deal. */
+export type PlayStep = {
+  order: number;
+  audienceId: Audience["id"];
+  audienceLabel: string;
+  objective: string;
+  move: string;
+  asset: string;
+  advanceWhen: string;
+  sourceIds: string[];
+};
+
+export type DiscoveryQuestion = {
+  audienceId: Audience["id"];
+  audienceLabel: string;
+  question: string;
+  listenFor: string;
+};
+
+export type PlayObjection = {
+  audienceId: Audience["id"];
+  audienceLabel: string;
+  objection: string;
+  response: string;
+  sourceIds: string[];
+};
+
+/** An audience the canvas suppresses for this pillar. Read from data, never generated. */
+export type SuppressedSeat = {
+  audienceId: Audience["id"];
+  audienceLabel: string;
+  reason: string;
+};
+
+/**
+ * The sales play for one pillar. The canvas says what each seat hears; the
+ * play says who the seller calls first, in what order, what to ask, and how
+ * to answer pushback. Strategy is generated; every factual assertion resolves
+ * to a source id the server has already validated against this pillar.
+ */
+export type SalesPlay = {
   pillarId: Pillar["id"];
   title: string;
-  audienceInsight: string;
-  why: string;
-  what: string;
-  how: string;
-  treatments: AudienceTreatment[];
+  thesis: string;
+  runWhen: string[];
+  entryAudienceId: Audience["id"];
+  entryAudienceLabel: string;
+  entryRationale: string;
+  sequence: PlayStep[];
+  discovery: DiscoveryQuestion[];
+  objections: PlayObjection[];
+  suppressed: SuppressedSeat[];
+  exitCriteria: string[];
   generatedAt: string;
 };
 
@@ -220,7 +265,7 @@ export const heroStage = {
     { id: "collide", title: "Collide", detail: "Where the story fights itself" },
     { id: "prove", title: "Prove", detail: "Four pillars" },
     { id: "cascade", title: "Cascade", detail: "Five audiences" },
-    { id: "brief", title: "Brief", detail: "Generated on demand" },
+    { id: "brief", title: "Play", detail: "Sales play on demand" },
   ],
   documents: [
     { id: "release", label: "Press release", phrase: "the institutional moment has arrived", sourceId: "s10" },
@@ -245,7 +290,9 @@ export const heroStage = {
     { audienceId: "press", message: "A market infrastructure story.", avoid: "crypto story" },
   ],
   briefInsight:
-    "Across all five audiences the proof is the operating record, not the technology. Every door opens on settlement, eligibility, or longevity. None of them opens on the word blockchain.",
+    "Open with the platform gatekeeper, because diligence has to be ready before demand arrives. Then take the operating record to allocators and treasurers. Every door opens on settlement, eligibility, or longevity. None of them opens on the word blockchain.",
+  /** Mini sequence for the hero's play card, by audience id. */
+  playSequence: ["gatekeeper", "press", "allocator", "treasurer"],
   ticker: {
     label: "The framework at a glance",
     claims: "Claims sourced",

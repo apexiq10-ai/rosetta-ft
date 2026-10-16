@@ -2,11 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import SourceChip from "./SourceChip";
-import {
-  sources,
-  type Pillar,
-  type StrategicBrief,
-} from "@/src/content/content";
+import { sources, type Pillar, type SalesPlay } from "@/src/content/content";
 import { ui } from "@/src/content/ui";
 
 const PRIMARY =
@@ -15,6 +11,8 @@ const GENERATE =
   "border border-generate bg-generate px-6 py-3 font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 const SECONDARY =
   "border border-ink px-6 py-3 font-sans text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+const EYEBROW = "font-mono text-xs tracking-wide text-accent uppercase";
+const SECTION_HEADING = "font-sans text-2xl leading-tight font-semibold text-ink";
 
 /** Citation numbers are the position in the sources array, as everywhere else. */
 function citationNumbers(sourceIds: string[]) {
@@ -23,31 +21,56 @@ function citationNumbers(sourceIds: string[]) {
     .filter((index) => index > 0);
 }
 
-function briefAsText(brief: StrategicBrief) {
-  const lines = [
-    brief.title,
-    "",
-    `${ui.audienceInsightLabel}: ${brief.audienceInsight}`,
-    "",
-    `${ui.whyLabel}: ${brief.why}`,
-    `${ui.whatLabel}: ${brief.what}`,
-    `${ui.howLabel}: ${brief.how}`,
-    "",
-  ];
-  brief.treatments.forEach((treatment) => {
-    const cites = citationNumbers(treatment.sourceIds);
+function cites(sourceIds: string[]) {
+  const numbers = citationNumbers(sourceIds);
+  return numbers.length ? ` [${numbers.join("] [")}]` : "";
+}
+
+function pad(order: number) {
+  return String(order).padStart(2, "0");
+}
+
+function playAsText(play: SalesPlay) {
+  const lines = [play.title, "", `${ui.playThesisLabel}: ${play.thesis}`, ""];
+  lines.push(ui.playRunWhenLabel, ...play.runWhen.map((item) => `  - ${item}`), "");
+  lines.push(`${ui.playEntryLabel}: ${play.entryAudienceLabel}`, `  ${play.entryRationale}`, "");
+  lines.push(ui.playSequenceLabel);
+  play.sequence.forEach((step) => {
     lines.push(
-      treatment.audienceLabel,
-      `  ${treatment.message}`,
-      `  ${ui.proofLabel}: ${treatment.proof}${
-        cites.length ? ` [${cites.join("] [")}]` : ""
-      }`,
-      `  ${ui.channelLabel}: ${treatment.channel}`,
-      `  ${ui.doNotSayLabel}: ${treatment.doNotSay}`,
-      "",
+      `  ${pad(step.order)} ${step.audienceLabel}: ${step.objective}`,
+      `     ${ui.playMoveLabel}: ${step.move}${cites(step.sourceIds)}`,
+      `     ${ui.playAssetLabel}: ${step.asset}`,
+      `     ${ui.playAdvanceLabel}: ${step.advanceWhen}`,
     );
   });
+  lines.push("", ui.playDiscoveryLabel);
+  play.discovery.forEach((item) => {
+    lines.push(
+      `  ${item.audienceLabel}: ${item.question}`,
+      `     ${ui.playListenLabel}: ${item.listenFor}`,
+    );
+  });
+  lines.push("", ui.playObjectionsLabel);
+  play.objections.forEach((item) => {
+    lines.push(
+      `  ${item.audienceLabel}`,
+      `     ${ui.playTheySayLabel}: ${item.objection}`,
+      `     ${ui.playYouSayLabel}: ${item.response}${cites(item.sourceIds)}`,
+    );
+  });
+  play.suppressed.forEach((seat) => {
+    lines.push("", `${ui.playSuppressedLabel}: ${seat.audienceLabel}`, `  ${seat.reason}`);
+  });
+  lines.push("", ui.playExitLabel, ...play.exitCriteria.map((item) => `  - ${item}`));
   return lines.join("\n");
+}
+
+function Label({ children }: { children: ReactNode }) {
+  return <p className={EYEBROW}>{children}</p>;
+}
+
+function Chips({ ids }: { ids: string[] }) {
+  return ids.length > 0 ? <SourceChip sourceIds={ids} className="ml-2 align-middle" /> : null;
 }
 
 export default function BriefPanel({
@@ -57,22 +80,22 @@ export default function BriefPanel({
   pillar: Pillar;
   actions?: ReactNode;
 }) {
-  const [briefs, setBriefs] = useState<Record<string, StrategicBrief>>({});
+  const [plays, setPlays] = useState<Record<string, SalesPlay>>({});
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [failure, setFailure] = useState<{ id: string; message: string } | null>(null);
 
-  const brief = briefs[pillar.id];
+  const play = plays[pillar.id];
   const status: "idle" | "loading" | "success" | "error" =
     loadingId === pillar.id
       ? "loading"
-      : brief
+      : play
         ? "success"
         : failure?.id === pillar.id
           ? "error"
           : "idle";
 
   const generate = async () => {
-    if (status === "loading" || brief) return;
+    if (status === "loading" || play) return;
     setLoadingId(pillar.id);
     setFailure(null);
     try {
@@ -84,13 +107,13 @@ export default function BriefPanel({
       const data: unknown = await response.json();
       if (!response.ok) {
         const message =
-          (data as { error?: string })?.error ?? "Could not generate the brief.";
+          (data as { error?: string })?.error ?? "Could not generate the play.";
         setFailure({ id: pillar.id, message });
         return;
       }
-      setBriefs((current) => ({ ...current, [pillar.id]: data as StrategicBrief }));
+      setPlays((current) => ({ ...current, [pillar.id]: data as SalesPlay }));
     } catch {
-      setFailure({ id: pillar.id, message: "Could not reach the brief service." });
+      setFailure({ id: pillar.id, message: "Could not reach the play service." });
     } finally {
       setLoadingId(null);
     }
@@ -99,7 +122,7 @@ export default function BriefPanel({
   // Typeset with jsPDF rather than captured as an image: this is structured
   // text and deserves selectable, searchable output.
   const downloadPdf = async () => {
-    if (!brief) return;
+    if (!play) return;
     const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({ unit: "pt", format: "a4" });
     const pageW = doc.internal.pageSize.getWidth();
@@ -108,34 +131,10 @@ export default function BriefPanel({
     const width = pageW - margin * 2;
     let y = margin;
 
-    const BULLET_X = 12;
-    const BULLET_TEXT_X = 26;
-
-    /**
-     * A bulleted line whose wrapped continuation lines align under the text,
-     * not back at the page margin.
-     */
-    const writeBullet = (text: string, size: number, gapAfter: number) => {
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(size);
-      const lines: string[] = doc.splitTextToSize(text, width - BULLET_TEXT_X);
-      const lineHeight = size * 1.35;
-      lines.forEach((line, index) => {
-        if (y + lineHeight > pageH - margin) {
-          doc.addPage();
-          y = margin;
-        }
-        if (index === 0) doc.text("\u2022", margin + BULLET_X, y);
-        doc.text(line, margin + BULLET_TEXT_X, y);
-        y += lineHeight;
-      });
-      y += gapAfter;
-    };
-
     const write = (
       text: string,
       size: number,
-      style: "bold" | "normal",
+      style: "bold" | "normal" | "italic",
       gapAfter: number,
       indent = 0,
     ) => {
@@ -153,44 +152,58 @@ export default function BriefPanel({
       });
       y += gapAfter;
     };
+    const heading = (text: string) => {
+      y += 6;
+      write(text, 13, "bold", 8);
+    };
 
-    write(brief.title, 20, "bold", 6);
-    write(new Date(brief.generatedAt).toUTCString(), 9, "normal", 18);
+    write(play.title, 20, "bold", 6);
+    write(new Date(play.generatedAt).toUTCString(), 9, "normal", 16);
+    write(play.thesis, 11, "normal", 14);
 
-    write(ui.audienceInsightLabel, 12, "bold", 4);
-    write(brief.audienceInsight, 11, "normal", 20);
+    heading(ui.playRunWhenLabel);
+    play.runWhen.forEach((item) => write(`•  ${item}`, 10, "normal", 4, 8));
 
-    ([
-      [ui.whyLabel, brief.why],
-      [ui.whatLabel, brief.what],
-      [ui.howLabel, brief.how],
-    ] as const).forEach(([label, value]) => {
-      write(label, 12, "bold", 4);
-      write(value, 10, "normal", 14);
+    heading(`${ui.playEntryLabel}: ${play.entryAudienceLabel}`);
+    write(play.entryRationale, 10, "normal", 6);
+
+    heading(ui.playSequenceLabel);
+    play.sequence.forEach((step) => {
+      write(`${pad(step.order)}  ${step.audienceLabel}`, 11, "bold", 3);
+      write(step.objective, 10, "italic", 4, 18);
+      write(`${ui.playMoveLabel}: ${step.move}${cites(step.sourceIds)}`, 10, "normal", 3, 18);
+      write(`${ui.playAssetLabel}: ${step.asset}`, 10, "normal", 3, 18);
+      write(`${ui.playAdvanceLabel}: ${step.advanceWhen}`, 10, "normal", 10, 18);
     });
 
-    brief.treatments.forEach((treatment) => {
-      const cites = citationNumbers(treatment.sourceIds);
-      write(treatment.audienceLabel, 13, "bold", 8);
-      writeBullet(treatment.message, 10, 6);
-      writeBullet(
-        `${ui.proofLabel}: ${treatment.proof}${
-          cites.length ? ` [${cites.join("] [")}]` : ""
-        }`,
-        10,
-        6,
-      );
-      writeBullet(`${ui.channelLabel}: ${treatment.channel}`, 10, 10);
-      write(`${ui.doNotSayLabel}: ${treatment.doNotSay}`, 10, "normal", 20, 12);
+    heading(ui.playDiscoveryLabel);
+    play.discovery.forEach((item) => {
+      write(`${item.audienceLabel}: ${item.question}`, 10, "normal", 2, 8);
+      write(`${ui.playListenLabel}: ${item.listenFor}`, 9, "italic", 8, 18);
     });
 
-    doc.save(`rosetta-brief-${brief.pillarId}.pdf`);
+    heading(ui.playObjectionsLabel);
+    play.objections.forEach((item) => {
+      write(item.audienceLabel, 10, "bold", 2, 8);
+      write(`${ui.playTheySayLabel}: ${item.objection}`, 10, "italic", 2, 18);
+      write(`${ui.playYouSayLabel}: ${item.response}${cites(item.sourceIds)}`, 10, "normal", 8, 18);
+    });
+
+    play.suppressed.forEach((seat) => {
+      heading(`${ui.playSuppressedLabel}: ${seat.audienceLabel}`);
+      write(seat.reason, 10, "normal", 6);
+    });
+
+    heading(ui.playExitLabel);
+    play.exitCriteria.forEach((item) => write(`•  ${item}`, 10, "normal", 4, 8));
+
+    doc.save(`rosetta-sales-play-${play.pillarId}.pdf`);
   };
 
-  const mailto = brief
+  const mailto = play
     ? `mailto:?subject=${encodeURIComponent(
         `${ui.briefEmailSubject} - ${pillar.shorthand}`,
-      )}&body=${encodeURIComponent(briefAsText(brief))}`
+      )}&body=${encodeURIComponent(playAsText(play))}`
     : "";
 
   return (
@@ -204,9 +217,7 @@ export default function BriefPanel({
           disabled={status === "loading"}
           className={GENERATE}
         >
-          {status === "loading"
-            ? ui.thinking
-            : `${ui.generateBrief} - ${pillar.shorthand}`}
+          {status === "loading" ? ui.thinking : `${ui.generateBrief} - ${pillar.shorthand}`}
         </button>
       </div>
 
@@ -216,75 +227,160 @@ export default function BriefPanel({
         </p>
       ) : null}
 
-      {brief ? (
+      {play ? (
         <article className="mt-8 border border-hairline bg-paper">
-          <div className="border-b border-hairline p-6 md:p-8">
+          {/* The thesis: why this play wins and where it starts. */}
+          <header className="border-b border-hairline p-6 md:p-8">
             <h3 className="font-sans text-3xl leading-tight font-semibold text-ink md:text-4xl">
-              {brief.title}
+              {play.title}
             </h3>
-            {/* The one part of this document that exists nowhere else on the
-                page, so it is set apart from the data it synthesizes. */}
             <p className="mt-6 border-t-2 border-accent pt-6 font-body text-lg leading-relaxed text-ink">
-              {brief.audienceInsight}
+              {play.thesis}
             </p>
+          </header>
+
+          <div className="grid gap-px border-b border-hairline bg-hairline md:grid-cols-2">
+            <section className="bg-paper p-6 md:p-8">
+              <Label>{ui.playRunWhenLabel}</Label>
+              <ul className="mt-4 space-y-3">
+                {play.runWhen.map((item) => (
+                  <li key={item} className="flex gap-3 font-body text-base leading-relaxed text-ink">
+                    <span aria-hidden className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-accent" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section className="bg-canvas p-6 md:p-8">
+              <Label>{ui.playEntryLabel}</Label>
+              <p className="mt-4 font-sans text-2xl leading-tight font-semibold text-ink">
+                {play.entryAudienceLabel}
+              </p>
+              <p className="mt-3 font-body text-base leading-relaxed text-slate">
+                {play.entryRationale}
+              </p>
+            </section>
           </div>
 
-          <div className="grid gap-px border-b border-hairline bg-hairline md:grid-cols-3">
-            {[
-              { label: ui.whyLabel, value: brief.why, surface: "bg-paper" },
-              { label: ui.whatLabel, value: brief.what, surface: "bg-canvas" },
-              { label: ui.howLabel, value: brief.how, surface: "bg-shade" },
-            ].map((item) => (
-              <div key={item.label} className={`${item.surface} p-6 md:p-8`}>
-                <h4 className="font-sans text-lg leading-tight font-semibold text-ink">
-                  {item.label}
-                </h4>
-                <p className="mt-4 font-body text-base leading-relaxed text-slate">
-                  {item.value}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid gap-px bg-hairline">
-            {brief.treatments.map((treatment) => (
-              <div key={treatment.audienceId} className="bg-paper p-6 md:p-8">
-                <h4 className="font-sans text-2xl leading-tight font-semibold text-ink">
-                  {treatment.audienceLabel}
-                </h4>
-                <p className="mt-4 font-body text-base leading-relaxed text-ink">
-                  {treatment.message}
-                </p>
-                <p className="mt-4 font-body text-sm leading-relaxed text-slate">
-                  {treatment.proof}
-                  {treatment.sourceIds.length > 0 ? (
-                    <SourceChip
-                      sourceIds={treatment.sourceIds}
-                      className="ml-2 align-middle"
-                    />
-                  ) : null}
-                </p>
-                <p className="mt-4 font-body text-sm leading-relaxed text-slate">
-                  {treatment.channel}
-                </p>
-                <div className="mt-6 bg-accent-muted p-4">
-                  <p className="font-mono text-xs tracking-wide text-accent uppercase">
-                    {ui.doNotSayLabel}
+          {/* The sequence is the core of the play: who, in what order, and the
+              signal that earns the next step. */}
+          <section className="border-b border-hairline p-6 md:p-8">
+            <h4 className={SECTION_HEADING}>{ui.playSequenceLabel}</h4>
+            <p className="mt-2 font-body text-sm leading-relaxed text-slate">
+              {ui.playSequenceStandfirst}
+            </p>
+            <ol className="mt-6 grid gap-px border border-hairline bg-hairline">
+              {play.sequence.map((step) => (
+                <li
+                  key={step.audienceId}
+                  className="grid gap-4 bg-paper p-6 md:grid-cols-[4rem_1fr] md:gap-6"
+                >
+                  <p
+                    aria-label={`${ui.stepLabel} ${step.order}`}
+                    className="font-mono text-3xl leading-none text-accent"
+                  >
+                    {pad(step.order)}
                   </p>
-                  <p className="mt-2 font-body text-sm leading-relaxed text-ink">
-                    {treatment.doNotSay}
+                  <div>
+                    <Label>{step.audienceLabel}</Label>
+                    <p className="mt-2 font-sans text-lg leading-snug font-semibold text-ink">
+                      {step.objective}
+                    </p>
+                    <div className="mt-4 grid gap-px bg-hairline md:grid-cols-3">
+                      <div className="bg-paper py-3 md:pr-4">
+                        <p className="font-sans text-xs font-semibold text-ink">{ui.playMoveLabel}</p>
+                        <p className="mt-1 font-body text-sm leading-relaxed text-slate">
+                          {step.move}
+                          <Chips ids={step.sourceIds} />
+                        </p>
+                      </div>
+                      <div className="bg-paper py-3 md:px-4">
+                        <p className="font-sans text-xs font-semibold text-ink">{ui.playAssetLabel}</p>
+                        <p className="mt-1 font-body text-sm leading-relaxed text-slate">{step.asset}</p>
+                      </div>
+                      <div className="bg-paper py-3 md:pl-4">
+                        <p className="font-sans text-xs font-semibold text-generate">
+                          {ui.playAdvanceLabel}
+                        </p>
+                        <p className="mt-1 font-body text-sm leading-relaxed text-ink">
+                          {step.advanceWhen}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="border-b border-hairline p-6 md:p-8">
+            <h4 className={SECTION_HEADING}>{ui.playDiscoveryLabel}</h4>
+            <div className="mt-6 grid gap-px border border-hairline bg-hairline md:grid-cols-2">
+              {play.discovery.map((item) => (
+                <div key={item.question} className="bg-paper p-6">
+                  <Label>{item.audienceLabel}</Label>
+                  <p className="mt-3 font-body text-base leading-relaxed text-ink">{item.question}</p>
+                  <p className="mt-3 font-body text-sm leading-relaxed text-slate">
+                    <span className="font-sans font-semibold text-ink">{ui.playListenLabel}: </span>
+                    {item.listenFor}
                   </p>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </section>
 
-          <div className="flex flex-wrap gap-4 border-t border-hairline p-6 md:p-8">
-            <button
-              type="button"
-              onClick={downloadPdf}
-              className={PRIMARY}
-            >
+          <section className="border-b border-hairline p-6 md:p-8">
+            <h4 className={SECTION_HEADING}>{ui.playObjectionsLabel}</h4>
+            <div className="mt-6 grid gap-px border border-hairline bg-hairline">
+              {play.objections.map((item) => (
+                <div key={item.objection} className="grid gap-4 bg-paper p-6 md:grid-cols-2 md:gap-8">
+                  <div>
+                    <Label>
+                      {item.audienceLabel} / {ui.playTheySayLabel}
+                    </Label>
+                    <p className="mt-3 font-body text-base leading-relaxed text-ink italic">
+                      &ldquo;{item.objection}&rdquo;
+                    </p>
+                  </div>
+                  <div className="border-l-2 border-generate pl-4">
+                    <p className="font-sans text-xs font-semibold text-generate">{ui.playYouSayLabel}</p>
+                    <p className="mt-2 font-body text-base leading-relaxed text-ink">
+                      {item.response}
+                      <Chips ids={item.sourceIds} />
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {play.suppressed.length > 0 ? (
+            <section className="border-b border-hairline bg-accent-muted p-6 md:p-8">
+              {play.suppressed.map((seat) => (
+                <div key={seat.audienceId}>
+                  <Label>
+                    {ui.playSuppressedLabel}: {seat.audienceLabel}
+                  </Label>
+                  <p className="mt-2 font-body text-sm leading-relaxed text-ink">{seat.reason}</p>
+                </div>
+              ))}
+            </section>
+          ) : null}
+
+          <section className="border-b border-hairline p-6 md:p-8">
+            <h4 className={SECTION_HEADING}>{ui.playExitLabel}</h4>
+            <ul className="mt-4 space-y-3">
+              {play.exitCriteria.map((item) => (
+                <li key={item} className="flex gap-3 font-body text-base leading-relaxed text-ink">
+                  <span aria-hidden className="mt-1.5 h-4 w-4 shrink-0 border-2 border-generate" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <div className="flex flex-wrap gap-4 p-6 md:p-8">
+            <button type="button" onClick={downloadPdf} className={PRIMARY}>
               {ui.downloadBriefPdf}
             </button>
             <a href={mailto} aria-label={ui.emailBrief} className={SECONDARY}>

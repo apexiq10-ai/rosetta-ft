@@ -541,7 +541,7 @@ export default function HeroStage() {
               )}
             </div>
 
-            <BriefCard on={phase === 4 && sub === 2} title={`${rails.shorthand} - strategic brief`} what={rails.statement} />
+            <BriefCard on={phase === 4 && sub === 2} title={`${rails.shorthand} ${ui.playTitleSuffix}`} />
 
             {/* The cursor, standing in for the reader driving the canvas. */}
             <div
@@ -625,8 +625,12 @@ export default function HeroStage() {
   );
 }
 
-function BriefCard({ on, title, what }: { on: boolean; title: string; what: string }) {
+function BriefCard({ on, title }: { on: boolean; title: string }) {
   const words = heroStage.briefInsight.split(" ");
+  const sequence = heroStage.playSequence.flatMap((id) =>
+    audiences.filter((audience) => audience.id === id),
+  );
+  const openingSeat = sequence[0]?.label ?? "";
   const reveal = (delay: number): CSSProperties => ({
     opacity: on ? 1 : 0,
     transform: on ? "none" : "translateY(6px)",
@@ -671,24 +675,25 @@ function BriefCard({ on, title, what }: { on: boolean; title: string; what: stri
       </p>
 
       <div className="mt-4 grid grid-cols-3 gap-px bg-hairline">
-        {column(ui.whyLabel, <><Bar w="95%" /><Bar w="70%" className="mt-1.5" /></>, "bg-paper", 1500)}
         {column(
-          ui.whatLabel,
-          <p className="font-body text-[11px] leading-snug text-slate">{what}</p>,
-          "bg-canvas",
-          1600,
+          ui.playEntryLabel,
+          <p className="font-body text-[11px] leading-snug text-slate">{openingSeat}</p>,
+          "bg-paper",
+          1500,
         )}
-        {column(ui.howLabel, <><Bar w="88%" /><Bar w="60%" className="mt-1.5" /></>, "bg-shade", 1700)}
+        {column(ui.playDiscoveryLabel, <><Bar w="92%" /><Bar w="66%" className="mt-1.5" /></>, "bg-canvas", 1600)}
+        {column(ui.playObjectionsLabel, <><Bar w="88%" /><Bar w="60%" className="mt-1.5" /></>, "bg-shade", 1700)}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {audiences.map((audience, i) => (
+      {/* The sequence, in order: the part of the play the canvas cannot show. */}
+      <div className="mt-4 flex flex-wrap items-center gap-1.5">
+        {sequence.map((audience, i) => (
           <span
             key={audience.id}
             className="border border-hairline px-1.5 py-0.5 font-mono text-[9px] tracking-wide text-slate uppercase"
             style={reveal(1900 + i * 90)}
           >
-            {audience.label}
+            <span className="text-accent">{String(i + 1).padStart(2, "0")}</span> {audience.label}
           </span>
         ))}
       </div>
