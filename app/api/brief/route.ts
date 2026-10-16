@@ -20,6 +20,8 @@ export const maxDuration = 60;
 const playCache = new Map<Pillar["id"], SalesPlay>();
 
 function fail(message: string, status: number) {
+  // Logged so the reason is visible in the deployment's function logs.
+  console.error(`[sales-play] ${status}: ${message}`);
   return Response.json({ error: message }, { status });
 }
 

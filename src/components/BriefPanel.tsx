@@ -95,7 +95,12 @@ export default function BriefPanel({
           : "idle";
 
   const generate = async () => {
-    if (status === "loading" || play) return;
+    if (status === "loading") return;
+    // Already generated: take the reader to it rather than appearing inert.
+    if (play) {
+      document.getElementById(`play-${pillar.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     setLoadingId(pillar.id);
     setFailure(null);
     try {
@@ -222,13 +227,14 @@ export default function BriefPanel({
       </div>
 
       {status === "error" && failure ? (
-        <p role="status" className="mt-4 font-body text-sm leading-relaxed text-slate">
-          {failure.message}
-        </p>
+        <div role="alert" className="mt-6 border-l-4 border-accent bg-accent-muted p-4">
+          <p className="font-sans text-sm font-semibold text-ink">{ui.playFailedLabel}</p>
+          <p className="mt-1 font-body text-sm leading-relaxed text-ink">{failure.message}</p>
+        </div>
       ) : null}
 
       {play ? (
-        <article className="mt-8 border border-hairline bg-paper">
+        <article id={`play-${pillar.id}`} className="mt-8 scroll-mt-24 border border-hairline bg-paper">
           {/* The thesis: why this play wins and where it starts. */}
           <header className="border-b border-hairline p-6 md:p-8">
             <h3 className="font-sans text-3xl leading-tight font-semibold text-ink md:text-4xl">
