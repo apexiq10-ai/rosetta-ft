@@ -90,7 +90,14 @@ const CARD_POS = [
 ];
 const TAB = { x: 24, w: 172, h: 50, top: 40, step: 60 };
 
-const AUD = { x: 252, w: 364, h: 64, top: 18, step: 76 };
+/** Audience rows, centred vertically for however many the Rails row carries. */
+const AUD = {
+  x: 252,
+  w: 364,
+  h: 64,
+  top: 18 + ((5 - heroStage.cascadeLines.length) * 76) / 2,
+  step: 76,
+};
 
 const BRIEF = { x: 36, y: 18, w: 568, h: 384 };
 const BUTTON = { x: 170, y: 186, w: 300, h: 48 };

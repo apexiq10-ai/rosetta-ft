@@ -35,7 +35,7 @@ export type Collision = {
 };
 
 export type Audience = {
-  id: "allocator" | "treasurer" | "gatekeeper" | "native" | "press";
+  id: "allocator" | "treasurer" | "gatekeeper" | "press";
   label: string;
   who: string;
   cares: string;
@@ -286,7 +286,7 @@ export const heroStage = {
     { id: "source", title: "Source", detail: "Every claim cited" },
     { id: "collide", title: "Collide", detail: "Where the story fights itself" },
     { id: "prove", title: "Prove", detail: "Four pillars" },
-    { id: "cascade", title: "Cascade", detail: "Five audiences" },
+    { id: "cascade", title: "Cascade", detail: "Four audiences" },
     { id: "brief", title: "Play", detail: "Sales play on demand" },
   ],
   documents: [
@@ -308,7 +308,6 @@ export const heroStage = {
     { audienceId: "allocator", message: "Lead with registered fund.", avoid: "blockchain" },
     { audienceId: "treasurer", message: "Settlement on your schedule.", avoid: "tokenization" },
     { audienceId: "gatekeeper", message: "An operating record, not a pilot.", avoid: "innovation" },
-    { audienceId: "native", message: "Early, and still running.", avoid: "crypto-native" },
     { audienceId: "press", message: "A market infrastructure story.", avoid: "crypto story" },
   ],
   briefInsight:
@@ -333,10 +332,12 @@ export const heroStage = {
 
 export const argument = {
   heading: "The problem is not the products.",
+  /** Short, declarative lines. Each one is rendered as its own beat. */
   paragraphs: [
-    "Your institution holds one of the most complete digital asset positions of any traditional asset manager. A registered fund running on public blockchains. A regulator-blessed collateral use case. White-label infrastructure other banks are buying. A shelf of exchange-traded products. An active crypto team acquired from the crypto-native side of the market.",
-    "It also holds five separate stories about them. An allocator hearing all five concludes that the firm is broad. An allocator hearing one concludes that the firm is leading.",
-    "The digital assets book is measured in billions inside a firm measured in trillions. That gap is not a product gap. The firm has products competitors cannot match. It is a narrative gap, and narrative gaps are the only kind a communications function can close.",
+    "Your institution holds one of the most complete digital asset positions in asset management, and tells five separate stories about it.",
+    "Hear all five and the firm sounds broad. Hear one and it sounds like the leader.",
+    "A book measured in billions inside a firm measured in trillions is not a product gap.",
+    "It is a narrative gap, and narrative gaps are the only kind communications can close.",
   ],
   sourceIds: ["s5", "s6"],
 };
@@ -467,14 +468,14 @@ export const collisions: Collision[] = [
 
 // ----------------------------------------------------------------------------
 // SCREEN 4: THE CASCADE
-// 4 pillars x 5 audiences. One cell revealed at a time. Progressive disclosure.
+// 4 pillars x 4 audiences. One cell revealed at a time. Progressive disclosure.
 // The "do not say" field is the one hiring managers notice.
 // ----------------------------------------------------------------------------
 
 export const cascadeIntro = {
   heading: "Messaging canvas",
   standfirst:
-    "Select a pillar. See how the same proof lands across five audiences.",
+    "Select a pillar. See how the same proof lands across four audiences.",
 };
 
 export const audiences: Audience[] = [
@@ -495,12 +496,6 @@ export const audiences: Audience[] = [
     label: "Platform gatekeeper",
     who: "Wirehouse diligence, RIA platform, home office",
     cares: "Suitability, diligence burden, and platform reputational risk.",
-  },
-  {
-    id: "native",
-    label: "Crypto-native counterparty",
-    who: "Exchanges, custodians, protocol teams, market makers",
-    cares: "Technical credibility, integration speed, and whether the firm actually ships.",
   },
   {
     id: "press",
@@ -544,17 +539,6 @@ export const cascade: CascadeCell[] = [
     doNotSay:
       "Do not present this as innovation. Present it as an operating record. Gatekeepers price novelty as risk.",
     sourceIds: ["s2"],
-  },
-  {
-    pillarId: "rails",
-    audienceId: "native",
-    message:
-      "The registered fund on public chains was live before most of the current tokenization market existed.",
-    proof: "Continuous operation since the earliest onchain registered fund launch.",
-    channel: "Protocol and infrastructure conferences, engineering-led content, technical podcasts.",
-    doNotSay:
-      "Do not claim to be crypto-native. Claim to be early and still running. Longevity is the credential this audience cannot dismiss.",
-    sourceIds: ["s1"],
   },
   {
     pillarId: "rails",
@@ -604,17 +588,6 @@ export const cascade: CascadeCell[] = [
   },
   {
     pillarId: "perimeter",
-    audienceId: "native",
-    message:
-      "Regulated collateral is the unlock this market has been waiting on, and it arrived through the registered fund channel.",
-    proof: "Money market fund shares eligible for securities lending collateral.",
-    channel: "Technical conferences, protocol partnership conversations, research notes.",
-    doNotSay:
-      "Do not position regulation as a constraint you tolerate. Position it as the moat you built. This audience respects the firm that did the hard version.",
-    sourceIds: ["s3"],
-  },
-  {
-    pillarId: "perimeter",
     audienceId: "press",
     message:
       "A regulator just allowed a blockchain-settled money market fund to be posted as securities lending collateral. That is a change to market structure.",
@@ -656,17 +629,6 @@ export const cascade: CascadeCell[] = [
     channel: "Platform diligence, manager research meetings.",
     doNotSay:
       "Do not emphasize the crypto-native pedigree of the acquired team. Emphasize the integration. Gatekeepers are underwriting the container.",
-    sourceIds: ["s4"],
-  },
-  {
-    pillarId: "discipline",
-    audienceId: "native",
-    message:
-      "The team is the team you already know. The balance sheet and the distribution behind it are new.",
-    proof: "Acquired investment team and liquid strategies now operating under the firm's name.",
-    channel: "Industry conferences, native media, direct counterparty conversations.",
-    doNotSay:
-      "Do not describe the acquisition as validation of crypto by traditional finance. That framing insults the audience you just bought.",
     sourceIds: ["s4"],
   },
   {
@@ -717,17 +679,6 @@ export const cascade: CascadeCell[] = [
   },
   {
     pillarId: "reach",
-    audienceId: "native",
-    message:
-      "Whatever you build, we can put it in front of institutions in well over a hundred countries. That is the part you cannot fork.",
-    proof: "Global distribution footprint; existing partnership activity across exchanges and infrastructure providers.",
-    channel: "Partnership and business development conversations, ecosystem events.",
-    doNotSay:
-      "Do not lecture on regulation. Lead with distribution. It is the only thing in the conversation they cannot build themselves.",
-    sourceIds: ["s6", "s13", "s14"],
-  },
-  {
-    pillarId: "reach",
     audienceId: "press",
     message:
       "The distribution question is the one nobody is asking. Products are easy to launch and impossible to sell.",
@@ -751,45 +702,46 @@ export const cascade: CascadeCell[] = [
 export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
   rails: {
     thesis:
-      "Sell the operating record, not the technology. Clear diligence first, then let a market structure story pull allocators and treasurers in.",
+      "Sell the operating record, not the technology. Clear diligence first, then use a market structure story in the financial press to pull allocators and treasurers toward a product the gatekeeper has already approved.",
     runWhen: [
       "The account holds money market funds and is reviewing cash or settlement operations.",
-      "A platform or consultant has asked for digital assets diligence materials.",
-      "The buyer has seen tokenization pilots elsewhere and doubts any reached production.",
+      "A platform or consultant has requested digital assets diligence materials.",
+      "The buyer has watched pilots elsewhere and doubts any of them reached production.",
+      "A competitor has announced an onchain product, and the buyer wants to know who is actually live.",
     ],
     entryRationale:
-      "Gatekeepers decide who is allowed to buy. Clearing them first turns every later meeting into a purchase decision, not a permission request.",
+      "Gatekeepers decide who is allowed to buy. Clearing them first turns every later meeting into a purchase decision rather than a permission request, and it means the press push lands on a product buyers can actually access.",
     sequence: [
       {
         audienceId: "gatekeeper",
         objective: "Clear the fund as an operating product, not a pilot.",
-        move: "Walk the home office through the production record and the banks now licensing the platform.",
-        asset: "Home office diligence pack.",
-        advanceWhen: "Diligence signs off or names its open items.",
+        move: "Walk the home office through the production record, then show that other banks now license the same platform. Present it as an operating history to verify, never as something new to evaluate.",
+        asset: "Home office diligence pack with the registration and licensing record.",
+        advanceWhen: "Diligence signs off, or names the specific items still open.",
         sourceIds: ["s1", "s2"],
       },
       {
         audienceId: "press",
         objective: "Make the market structure story public before the sales push.",
-        move: "Offer one tier-one outlet the exclusive on banks running the firm's rails.",
-        asset: "Exclusive briefing, executive byline as the follow.",
-        advanceWhen: "Coverage files on the markets or infrastructure desk.",
+        move: "Offer one tier-one outlet the exclusive on an asset manager selling its rails to other banks. Keep it on the markets or infrastructure desk, and follow with an executive byline.",
+        asset: "Exclusive briefing and byline draft.",
+        advanceWhen: "Coverage files outside the crypto desk.",
         sourceIds: ["s2"],
       },
       {
         audienceId: "allocator",
         objective: "Get the fund onto the investment committee agenda.",
-        move: "Lead with the registered fund wrapper, then show it has settled through multiple market cycles.",
+        move: "Lead with the registered fund wrapper, which is the reassurance. Then show it has settled on public infrastructure through multiple market cycles, which is the differentiation.",
         asset: "IC-ready one-pager and consultant briefing.",
-        advanceWhen: "A consultant requests a manager meeting.",
+        advanceWhen: "A consultant requests a manager meeting or mandate review.",
         sourceIds: ["s1"],
       },
       {
         audienceId: "treasurer",
         objective: "Convert interest into a funded cash allocation.",
-        move: "Frame it as settlement, availability, and reconciliation on the treasurer's schedule.",
+        move: "Frame the fund as settlement, availability, and reconciliation on the treasurer's schedule. Use the banks licensing the platform as the counterparty signal.",
         asset: "Treasury operations walkthrough with business development.",
-        advanceWhen: "Treasury opens onboarding.",
+        advanceWhen: "Treasury opens onboarding or operational due diligence.",
         sourceIds: ["s1", "s2"],
       },
     ],
@@ -797,22 +749,27 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
       {
         audienceId: "gatekeeper",
         question: "What would a digital assets product need to show your diligence team before it reaches the platform?",
-        listenFor: "Operating history. Rails answers it directly.",
+        listenFor: "Operating history and a regulated wrapper. Rails answers both directly.",
+      },
+      {
+        audienceId: "gatekeeper",
+        question: "What has stopped similar products from clearing your review before?",
+        listenFor: "Novelty or a thin track record. Lead with years in production.",
       },
       {
         audienceId: "allocator",
         question: "When your committee last discussed digital assets, was the question exposure or infrastructure?",
-        listenFor: "Exposure. Reframe to infrastructure and price leaves the room.",
+        listenFor: "Exposure. Reframe to infrastructure and the conversation leaves price behind.",
       },
       {
         audienceId: "treasurer",
         question: "Where does cash sit idle because settlement windows will not let it move?",
-        listenFor: "Named cut-offs, weekend gaps, or manual reconciliation.",
+        listenFor: "Named cut-offs, weekend gaps, or manual reconciliation work.",
       },
       {
-        audienceId: "native",
-        question: "What do you need from a registered fund before you integrate it?",
-        listenFor: "A track record. Longevity is the credential.",
+        audienceId: "press",
+        question: "What would make this a markets story for your desk rather than a crypto story?",
+        listenFor: "Competitors as customers. The white-label angle gives them exactly that.",
       },
     ],
     objections: [
@@ -820,54 +777,63 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         audienceId: "gatekeeper",
         objection: "We do not onboard experimental products.",
         response:
-          "It is a registered fund with years in production, and other banks now license the platform. The record is the diligence answer.",
+          "It is a registered fund with years in production, and other banks now license the platform it runs on. The record is the diligence answer.",
         sourceIds: ["s1", "s2"],
+      },
+      {
+        audienceId: "allocator",
+        objection: "Our committee will not approve a pilot.",
+        response:
+          "Neither would we ask it to. This is a registered fund that has operated through multiple market cycles, so the committee is reviewing a record, not an experiment.",
+        sourceIds: ["s1"],
       },
       {
         audienceId: "treasurer",
         objection: "Is this just tokenization marketing?",
         response:
-          "It is a settlement decision. The fund is in operation, and the infrastructure under it is licensed to other institutions.",
+          "It is a settlement decision. The fund is in operation, and the infrastructure under it is licensed to other regulated institutions.",
         sourceIds: ["s1", "s2"],
       },
       {
         audienceId: "press",
         objection: "Isn't this the same brand as your consumer app?",
         response:
-          "The name carries several jobs today. The story is infrastructure other banks are buying, which belongs on the markets desk.",
+          "The name does several jobs today. The story here is infrastructure other banks are buying, which belongs on the markets desk.",
         sourceIds: ["s2", "s8"],
       },
     ],
     exitCriteria: [
       "Diligence clears the fund for at least one platform.",
-      "A consultant puts it on an investment committee agenda.",
+      "Coverage runs as a market infrastructure story.",
+      "A consultant puts the fund on an investment committee agenda.",
       "A treasury team opens onboarding.",
     ],
   },
 
   perimeter: {
     thesis:
-      "The regulator has already answered the committee's hardest question. State the letter precisely and sell less work and better collateral, not crypto.",
+      "The regulator has already answered the committee's hardest question. State the letter precisely, sell the gatekeeper less work and the treasurer better collateral, and keep crypto out of every room that does not need it.",
     runWhen: [
       "The account runs securities lending or manages collateral against cash balances.",
       "Compliance has stalled a digital assets review on regulatory grounds.",
       "The buyer cites regulatory uncertainty as the reason to wait.",
+      "A consultant is drafting guidance on onchain cash products for clients.",
     ],
     entryRationale:
-      "Compliance is where these deals die. A documented regulatory answer turns the gatekeeper from blocker into the person who clears the path.",
+      "Compliance is where these deals die. A documented regulatory answer turns the gatekeeper from the blocker into the person who clears the path, and every later seat inherits that answer.",
     sequence: [
       {
         audienceId: "gatekeeper",
         objective: "Retire the regulatory objection on the record.",
-        move: "Take platform legal through exactly what the no-action relief permits, and nothing beyond it.",
-        asset: "Compliance briefing on the letter's scope.",
+        move: "Take platform legal through exactly what the no-action relief permits, and nothing beyond it. Frame it as a diligence question that now has a documented answer, which means less work for them.",
+        asset: "Compliance briefing with the letter's scope summarized.",
         advanceWhen: "Legal records the regulatory question as closed.",
         sourceIds: ["s3"],
       },
       {
         audienceId: "allocator",
         objective: "Put the collateral use case in front of the committee.",
-        move: "Show that registered funds may use the onchain fund for cash management, including as securities lending collateral.",
+        move: "Show that registered funds may use the onchain fund for cash management, including as securities lending collateral. Describe the scope precisely, because precision is the asset.",
         asset: "IC one-pager on the letter.",
         advanceWhen: "The committee asks how it fits existing cash or lending mandates.",
         sourceIds: ["s3"],
@@ -875,17 +841,17 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
       {
         audienceId: "treasurer",
         objective: "Turn eligibility into a balance sheet decision.",
-        move: "Position idle cash that also works as collateral. Leave crypto out of the conversation entirely.",
+        move: "Position idle cash that also works as collateral as an operational outcome. Leave crypto out of the conversation entirely, because nothing in the proposition requires it.",
         asset: "Collateral management walkthrough.",
         advanceWhen: "Treasury and collateral teams meet on it together.",
         sourceIds: ["s3"],
       },
       {
         audienceId: "press",
-        objective: "Land it as a market structure story.",
-        move: "Brief the regulatory and market structure desks on what changed for collateral markets.",
-        asset: "Desk briefing on the letter.",
-        advanceWhen: "Coverage runs outside the crypto desk.",
+        objective: "Land the letter as a market structure story.",
+        move: "Brief the regulatory and market structure desks on what changed for collateral markets. Steer away from the crypto desk, where it would read as a sector win.",
+        asset: "Desk briefing on the letter and its scope.",
+        advanceWhen: "Coverage runs on a regulatory or markets desk.",
         sourceIds: ["s3"],
       },
     ],
@@ -894,6 +860,11 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         audienceId: "gatekeeper",
         question: "Which regulatory question has blocked digital assets reviews on your platform before?",
         listenFor: "Eligibility. That is the question the letter addresses.",
+      },
+      {
+        audienceId: "gatekeeper",
+        question: "How much review time does a new cash product cost your team today?",
+        listenFor: "Weeks. A documented answer is time back.",
       },
       {
         audienceId: "allocator",
@@ -906,9 +877,9 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         listenFor: "A meaningful split. That duplication is the opening.",
       },
       {
-        audienceId: "native",
-        question: "What would regulated collateral change on your product roadmap?",
-        listenFor: "Use cases or counterparties that were blocked without it.",
+        audienceId: "press",
+        question: "Which market structure changes is your desk tracking this year?",
+        listenFor: "Collateral and settlement. The letter belongs in that story.",
       },
     ],
     objections: [
@@ -920,6 +891,13 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         sourceIds: ["s3"],
       },
       {
+        audienceId: "gatekeeper",
+        objection: "Regulatory views can change.",
+        response:
+          "The relief is on the record today, and that is what diligence reviews. Present the scope as written and the review has a documented basis.",
+        sourceIds: ["s3"],
+      },
+      {
         audienceId: "treasurer",
         objection: "We are not putting that kind of risk on the balance sheet.",
         response:
@@ -927,43 +905,37 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         sourceIds: ["s3"],
       },
       {
-        audienceId: "native",
-        objection: "Regulation slows everything down.",
+        audienceId: "press",
+        objection: "Is this just another crypto approval?",
         response:
-          "Here it did the opposite. Regulated collateral arrived through the registered fund channel, which is the version the market can build on.",
+          "It is a change to market structure. A regulator allowed a money market fund settled on public infrastructure to serve as securities lending collateral.",
         sourceIds: ["s3"],
       },
     ],
     exitCriteria: [
       "Platform legal records the regulatory question as closed.",
       "A collateral or securities lending desk joins the conversation.",
+      "An investment committee reviews the collateral use case.",
       "Coverage runs on a market structure desk.",
     ],
   },
 
   discipline: {
     thesis:
-      "Sell the method, not the asset class. A known team inside the firm's risk framework, betting that dispersion rewards research, never on where prices go next.",
+      "Sell the method, not the asset class. The strategy is a bet that dispersion rewards research, run by an established team inside the firm's risk framework. It never depends on where prices go next, so it never has to be re-argued when they move.",
     runWhen: [
-      "The allocator holds passive crypto exposure and is asking what active adds.",
+      "The allocator holds passive crypto exposure and is asking what active management adds.",
       "Manager research is evaluating crypto strategies and wants process, not conviction.",
       "The committee or coverage is anchored on price direction.",
+      "Price-based launch narratives across the market have become hard to defend.",
     ],
     entryRationale:
-      "An acquisition puts relationships at risk first. Lock in the counterparties who know the team, then take the method to the people who underwrite it.",
+      "Manager research underwrites the container before any allocator can buy. Win the process review first, and the method argument has an approved product to land on.",
     sequence: [
-      {
-        audienceId: "native",
-        objective: "Keep the counterparties who already know the team.",
-        move: "Confirm the team is unchanged, with the firm's balance sheet and distribution now behind it.",
-        asset: "Direct counterparty conversations.",
-        advanceWhen: "Counterparties confirm existing relationships continue.",
-        sourceIds: ["s4"],
-      },
       {
         audienceId: "gatekeeper",
         objective: "Get the strategy underwritten as a process, not a team bet.",
-        move: "Show how the acquired team runs inside the firm's research and risk framework rather than beside it.",
+        move: "Show how the acquired team runs inside the firm's research and risk framework rather than beside it. Lead with the integration and the reporting line, not the team's pedigree.",
         asset: "Manager research meeting with the framework documented.",
         advanceWhen: "Research approves a full due diligence review.",
         sourceIds: ["s4"],
@@ -971,18 +943,18 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
       {
         audienceId: "allocator",
         objective: "Move the conversation from price to method.",
-        move: "Argue that dispersion rewards research, using the discipline that built the firm.",
-        asset: "Research-led allocator roundtable.",
+        move: "Argue that dispersion in this asset class is wide enough to reward research. Defend the method the firm has applied for decades, never the asset class itself.",
+        asset: "Research-led allocator roundtable and consultant education.",
         advanceWhen: "An allocator asks for the process deep dive.",
         sourceIds: ["s4", "s15"],
       },
       {
         audienceId: "press",
         objective: "Replace the launch narrative with a method story.",
-        move: "Pitch the inefficiency thesis to markets desks through a CIO interview.",
+        move: "Pitch the inefficiency thesis to asset management and markets desks through a CIO interview. A long-standing active manager choosing to research this market is a better story than a price call.",
         asset: "CIO interview.",
         advanceWhen: "Coverage cites the method rather than a price call.",
-        sourceIds: ["s4"],
+        sourceIds: ["s4", "s15"],
       },
     ],
     discovery: [
@@ -994,7 +966,7 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
       {
         audienceId: "allocator",
         question: "How is your committee judging crypto managers today: returns or process?",
-        listenFor: "Returns. Move them to process before the market does it for you.",
+        listenFor: "Returns. Move the conversation to process so it does not reprice with the asset.",
       },
       {
         audienceId: "gatekeeper",
@@ -1002,9 +974,14 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         listenFor: "Integration and controls. That is the container the firm can document.",
       },
       {
-        audienceId: "native",
-        question: "What did you need to hear when the team changed ownership?",
-        listenFor: "Continuity. Answer with the same team and new distribution.",
+        audienceId: "gatekeeper",
+        question: "What would you need to see to treat this like any other active strategy on the platform?",
+        listenFor: "A shared risk framework and reporting line. Both already exist.",
+      },
+      {
+        audienceId: "press",
+        question: "Is your desk covering this market as a price story or a structure story?",
+        listenFor: "Price. Offer the inefficiency thesis as the fresher angle.",
       },
     ],
     objections: [
@@ -1016,6 +993,13 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         sourceIds: ["s4", "s9", "s10"],
       },
       {
+        audienceId: "allocator",
+        objection: "We are not convinced crypto belongs in the portfolio at all.",
+        response:
+          "Then this is not the year to argue it. For allocators who already hold the asset class, the only question is whether research beats passive exposure.",
+        sourceIds: [],
+      },
+      {
         audienceId: "gatekeeper",
         objection: "This is a crypto-native team with a new logo.",
         response:
@@ -1023,11 +1007,11 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         sourceIds: ["s4"],
       },
       {
-        audienceId: "native",
-        objection: "Traditional finance just bought its way in.",
+        audienceId: "press",
+        objection: "Wasn't the launch just a market-timing call?",
         response:
-          "The team you know still runs the strategies. What changed is the balance sheet and distribution behind them.",
-        sourceIds: ["s4"],
+          "The launch line dated itself. The durable story is a long-standing active manager concluding this market is inefficient enough to research.",
+        sourceIds: ["s4", "s10", "s15"],
       },
     ],
     exitCriteria: [
@@ -1039,46 +1023,47 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
 
   reach: {
     thesis:
-      "Distribution is the one asset in this market that cannot be forked. Start where approval already exists and sell digital assets as an extension, never a new counterparty.",
+      "Distribution is the one asset in this market that cannot be forked. Start where approval already exists, sell digital assets as an extension of relationships the buyer already trusts, and save the firm's scale for the close.",
     runWhen: [
       "The account already has an approved relationship with the firm's fund complex.",
-      "A multinational treasury is weighing providers that operate in one jurisdiction.",
-      "A crypto-native partner has product but no route to institutional buyers.",
+      "A multinational treasury is weighing providers that operate in a single jurisdiction.",
+      "The buyer's main concern about digital assets providers is whether they will still be there.",
+      "Coverage is asking which incumbents can actually sell what they launch.",
     ],
     entryRationale:
-      "The firm is already on the platform. Starting where approval exists makes every later step an extension rather than a new counterparty review.",
+      "The firm is already on the platform. Starting where approval exists makes every later step an extension rather than a new counterparty review, and it frames digital assets as part of the firm, not a separate business.",
     sequence: [
       {
         audienceId: "gatekeeper",
         objective: "Treat digital assets as an extension of the existing relationship.",
-        move: "Bring it through the current home office relationship rather than a fresh onboarding.",
+        move: "Bring it through the current home office relationship rather than a fresh onboarding. Never present digital assets as a separate business, because the advantage is that it is not one.",
         asset: "Platform expansion conversation.",
         advanceWhen: "The platform reviews it under the existing relationship.",
         sourceIds: ["s6"],
       },
       {
-        audienceId: "allocator",
-        objective: "Close the survival question.",
-        move: "Use the firm's scale and history as the closing argument, after the product case is made.",
-        asset: "Standard institutional channels.",
-        advanceWhen: "Counterparty longevity stops coming up.",
-        sourceIds: ["s6", "s15"],
-      },
-      {
         audienceId: "treasurer",
         objective: "Win multinational treasury on jurisdiction coverage.",
-        move: "Map the firm's footprint against the treasurer's entities. Leave competitors unnamed.",
-        asset: "Treasury association and liquidity events.",
+        move: "Map the firm's footprint across dozens of countries against the treasurer's entities. Leave competitors unnamed, because the comparison is stronger implied.",
+        asset: "Treasury association and corporate liquidity events.",
         advanceWhen: "Treasury maps its entities against the footprint.",
         sourceIds: ["s6"],
       },
       {
-        audienceId: "native",
-        objective: "Turn distribution into partnerships.",
-        move: "Offer institutional distribution as the thing a partner cannot build alone.",
-        asset: "Partnership and business development conversations.",
-        advanceWhen: "A partner proposes a distribution agreement.",
-        sourceIds: ["s6", "s13", "s14"],
+        audienceId: "allocator",
+        objective: "Close the survival question.",
+        move: "Make the product case first, then use the firm's scale and institutional history as the closing argument. Heritage closes the conversation. It never opens it.",
+        asset: "Standard institutional channels, as reinforcement.",
+        advanceWhen: "Counterparty longevity stops coming up in committee.",
+        sourceIds: ["s6", "s15"],
+      },
+      {
+        audienceId: "press",
+        objective: "Make distribution the story nobody else is telling.",
+        move: "Pitch analysis and feature desks on why products are easy to launch and hard to sell. Frame the size of the digital assets book as runway, never as a standalone number.",
+        asset: "CEO or head of innovation interview.",
+        advanceWhen: "Coverage frames distribution as the advantage.",
+        sourceIds: ["s5", "s6"],
       },
     ],
     discovery: [
@@ -1093,14 +1078,19 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         listenFor: "A mismatch. That gap is the opening.",
       },
       {
-        audienceId: "native",
-        question: "Who are your institutional buyers today, and how do you reach them?",
-        listenFor: "No reliable route. Distribution is the offer.",
+        audienceId: "treasurer",
+        question: "Who reviews new cash providers across your entities?",
+        listenFor: "A central team. Win them once and the footprint does the rest.",
       },
       {
         audienceId: "allocator",
         question: "What would make your committee comfortable on counterparty longevity?",
         listenFor: "Scale and history. Bring them as the close, not the opening.",
+      },
+      {
+        audienceId: "press",
+        question: "Which launches in this market have actually found buyers?",
+        listenFor: "Few. Distribution is the angle that explains why.",
       },
     ],
     objections: [
@@ -1108,7 +1098,7 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         audienceId: "allocator",
         objection: "Your digital assets book is small for a firm your size.",
         response:
-          "That gap is the point. The reach behind it, dozens of countries and clients in well over a hundred, is what no new entrant can acquire.",
+          "That gap is the runway. The reach behind it, operations across dozens of countries and clients in well over a hundred, is what a new entrant cannot acquire.",
         sourceIds: ["s5", "s6"],
       },
       {
@@ -1119,17 +1109,25 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
         sourceIds: ["s6"],
       },
       {
-        audienceId: "native",
-        objection: "Incumbents move too slowly to partner with.",
+        audienceId: "treasurer",
+        objection: "We need a provider in every jurisdiction we operate in.",
         response:
-          "The firm already works with an on-ramp provider and a major exchange. The offer is distribution you cannot build yourself.",
-        sourceIds: ["s13", "s14"],
+          "That is the right test. The firm operates across dozens of countries, so start by mapping your entities against that footprint.",
+        sourceIds: ["s6"],
+      },
+      {
+        audienceId: "press",
+        objection: "Isn't scale just a slower way to launch?",
+        response:
+          "Launching is easy. Selling is hard, and the firm already serves clients in well over a hundred countries.",
+        sourceIds: ["s6"],
       },
     ],
     exitCriteria: [
       "A platform reviews digital assets under the existing relationship.",
       "A multinational treasury shortlists the firm on jurisdiction coverage.",
-      "A partner proposes a distribution agreement.",
+      "Counterparty longevity stops coming up in committee.",
+      "Coverage frames distribution as the firm's advantage.",
     ],
   },
 };
@@ -1139,7 +1137,7 @@ export const salesPlays: Record<Pillar["id"], SalesPlayContent> = {
 // ----------------------------------------------------------------------------
 
 export const close = {
-  heading: "One story. Four proofs. Five doors.",
+  heading: "One story. Four proofs. Four doors.",
   paragraphs: [
     "A messaging framework is only worth building if it survives contact with a channel calendar, a conference schedule, and a business development conversation that has to close.",
     "This one does, because every claim in it is already true and already published. Nothing here requires your institution to become something it is not. It requires the firm to say one thing consistently that it currently says five ways.",

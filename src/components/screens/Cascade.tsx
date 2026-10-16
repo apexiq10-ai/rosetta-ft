@@ -18,6 +18,7 @@ import { pillarFields } from "@/src/lib/pillar";
 import { ui } from "@/src/content/ui";
 
 const CELL = "bg-paper p-6";
+const ROW_LABEL = "font-mono text-xs tracking-wide text-slate uppercase";
 
 function PersonaColumn({
   audience,
@@ -31,12 +32,16 @@ function PersonaColumn({
   // A cell with nothing to cite is making no claim, which is what the suppress
   // state is. Derived from the data rather than named in code.
   const suppressed = cell.sourceIds.length === 0;
-  // The subgrid track only means anything inside the five column grid; on its
-  // own the same cells stack, with the hairline gaps still doing the dividing.
-  const wrapper =
-    variant === "track"
-      ? "grid w-full grid-rows-subgrid row-span-6 gap-px"
-      : "flex w-full flex-col gap-px border border-hairline bg-hairline";
+  // On desktop the shared label column names each row, so the cells carry no
+  // labels of their own. Stacked as a card, each cell names itself.
+  const card = variant === "card";
+  // The subgrid track only means anything inside the canvas grid; on its own
+  // the same cells stack, with the hairline gaps still doing the dividing.
+  const wrapper = card
+    ? "flex w-full flex-col gap-px border border-hairline bg-hairline"
+    : "grid w-full grid-rows-subgrid row-span-6 gap-px";
+  const label = (text: string, className = ROW_LABEL) =>
+    card ? <p className={`${className} mb-2`}>{text}</p> : null;
 
   return (
     <div className={`${wrapper} ${suppressed ? "opacity-60" : ""}`}>
@@ -46,12 +51,15 @@ function PersonaColumn({
         </h3>
       </div>
       <div className={CELL}>
+        {label(ui.rowWhoLabel)}
         <p className="font-body text-sm leading-relaxed text-slate">{audience.who}</p>
       </div>
       <div className={CELL}>
+        {label(ui.rowMessageLabel)}
         <p className="font-body text-base leading-relaxed text-ink">{cell.message}</p>
       </div>
       <div className={CELL}>
+        {label(ui.rowProofLabel)}
         <p className="font-body text-sm leading-relaxed text-slate">
           {cell.proof}
           {cell.sourceIds.length > 0 ? (
@@ -60,14 +68,36 @@ function PersonaColumn({
         </p>
       </div>
       <div className={CELL}>
+        {label(ui.rowChannelLabel)}
         <p className="font-body text-sm leading-relaxed text-slate">{cell.channel}</p>
       </div>
       <div className="bg-accent-muted p-6">
-        <p className="font-mono text-xs tracking-wide text-accent uppercase">
-          {ui.doNotSayLabel}
-        </p>
-        <p className="mt-2 font-body text-sm leading-relaxed text-ink">{cell.doNotSay}</p>
+        {label(ui.doNotSayLabel, "font-mono text-xs tracking-wide text-accent uppercase")}
+        <p className="font-body text-sm leading-relaxed text-ink">{cell.doNotSay}</p>
       </div>
+    </div>
+  );
+}
+
+/** The y-axis: one label per row track, shared by every audience column. */
+function RowLabels() {
+  const rows = [
+    { text: ui.rowSeatLabel, accent: false },
+    { text: ui.rowWhoLabel, accent: false },
+    { text: ui.rowMessageLabel, accent: false },
+    { text: ui.rowProofLabel, accent: false },
+    { text: ui.rowChannelLabel, accent: false },
+    { text: ui.doNotSayLabel, accent: true },
+  ];
+  return (
+    <div className="grid grid-rows-subgrid row-span-6 gap-px">
+      {rows.map((row) => (
+        <div key={row.text} className={`${row.accent ? "bg-accent-muted" : "bg-canvas"} p-6`}>
+          <p className={row.accent ? "font-mono text-xs tracking-wide text-accent uppercase" : ROW_LABEL}>
+            {row.text}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -190,11 +220,11 @@ export default function Cascade() {
           ))}
         </div>
 
-        {/* One grid for all five personas: each field type is its own row track,
+        {/* One grid for every audience: each field type is its own row track,
             so a long bullet in one column sets the height of that row in every
             column instead of pushing its own column out of step. */}
-        {/* Mobile: one persona at a time. Five columns cannot fit a phone, and
-            stacking all five buries content meant to be compared. */}
+        {/* Mobile: one persona at a time. The full grid cannot fit a phone, and
+            stacking every column buries content meant to be compared. */}
         <div className="mt-10 md:hidden">
           <SwipeDeck
             label={ui.audienceSelectorLabel}
@@ -217,7 +247,13 @@ export default function Cascade() {
         </div>
 
         <div className="mt-10 hidden snap-x snap-mandatory overflow-x-auto border border-hairline [scrollbar-width:none] md:block [&::-webkit-scrollbar]:hidden">
-          <div className="grid grid-cols-[repeat(5,minmax(15rem,1fr))] grid-rows-[auto_auto_auto_auto_auto_auto] gap-px bg-hairline">
+          <div
+            className="grid grid-rows-[auto_auto_auto_auto_auto_auto] gap-px bg-hairline"
+            style={{
+              gridTemplateColumns: `9rem repeat(${audiences.length}, minmax(14rem, 1fr))`,
+            }}
+          >
+            <RowLabels />
             {audiences.map((audience) => {
               const cell = cascade.find(
                 (item) => item.pillarId === pillar.id && item.audienceId === audience.id,
@@ -246,7 +282,7 @@ export default function Cascade() {
               disabled={busy}
               // Hidden on mobile: the deck only renders one persona at a time,
               // so a capture of it would be a partial canvas. The brief PDF
-              // carries all five audiences as text instead.
+              // carries every audience as text instead.
               className="hidden border border-accent bg-accent px-6 py-3 md:block font-sans text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {ui.downloadCanvasPdf}

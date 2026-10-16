@@ -13,15 +13,22 @@ export default function Argument() {
         </h2>
 
         <div>
-          <div className="space-y-6">
-            {argument.paragraphs.map((paragraph, index) => (
-              <p
-                key={index}
-                className="font-body text-base leading-relaxed text-slate md:text-lg"
-              >
-                {paragraph}
-              </p>
-            ))}
+          {/* Four short beats, not paragraphs. The last carries the thesis, so
+              it is set in ink at full weight. */}
+          <div className="space-y-5">
+            {argument.paragraphs.map((line, index) => {
+              const last = index === argument.paragraphs.length - 1;
+              return (
+                <p
+                  key={index}
+                  className={`font-body text-lg leading-snug md:text-2xl ${
+                    last ? "font-semibold text-ink" : "text-slate"
+                  }`}
+                >
+                  {line}
+                </p>
+              );
+            })}
           </div>
 
           <SourceChip sourceIds={argument.sourceIds} className="mt-10" />
